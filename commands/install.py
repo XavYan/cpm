@@ -29,7 +29,7 @@ class CommandInstall(CommandInterface):
       print("Module", module, "exists")
       self._import_module(module)
     else:
-      raise FileNotFoundError
+      raise NotADirectoryError
 
   def _import_module (self, module):
     if not exists(config('IMPORT_FOLDER')):
