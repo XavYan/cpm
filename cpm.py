@@ -7,7 +7,8 @@ import commands
 options = [
   'add',
   'install',
-  'init'
+  'init',
+  'remove'
 ]
 
 cms = {}
