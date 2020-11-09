@@ -1,6 +1,6 @@
 class CommandInterface:
   def __init__ (self):
-    self.arg = ""
+    pass
 
   def __str__ (self):
     return "command"
