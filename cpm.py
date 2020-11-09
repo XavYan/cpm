@@ -31,5 +31,5 @@ if args.install and args.add:
 for arg, value in vars(args).items():
   if value:
     cms[arg].execute(value)
-
-print("Done successfully!")
+    print(cms[arg].final_text())
+    exit(0)

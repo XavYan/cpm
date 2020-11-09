@@ -20,6 +20,9 @@ class CommandInit(CommandInterface):
   def long_option (self):
     return "--init"
 
+  def final_text (self):
+    return "Package directory created successfully"
+
   def execute (self, package):
     self._create_base_dir(package)
     if config('MAKEFILE') == "True":

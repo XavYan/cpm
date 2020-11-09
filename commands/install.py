@@ -23,6 +23,9 @@ class CommandInstall(CommandInterface):
   def long_option (self):
     return "--install"
 
+  def final_text (self):
+    return "Module installed successfully"
+
   def execute (self, module):
     MODULE_PATH = join(config('DIR_PATH'), module)
     if exists(MODULE_PATH) and isdir(MODULE_PATH):
