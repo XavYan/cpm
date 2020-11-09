@@ -1,5 +1,9 @@
 from .interface import CommandInterface
+
 from decouple import config
+from os import listdir
+from os.path import join
+from shutil import copytree
 
 class CommandAdd(CommandInterface):
   def __init__ (self):
@@ -21,4 +25,12 @@ class CommandAdd(CommandInterface):
     return "--add"
 
   def execute (self, module):
-    pass
+    try:
+      files = listdir(module)
+      for file in files:
+        print(join(module, file))
+      copytree(module, join(config('DIR_PATH'), module))
+    except NotADirectoryError:
+      print("Cannot execute add:", module, "is not a directory")
+    except FileNotFoundError:
+      print("Cannot execute add: cannot found", module)
