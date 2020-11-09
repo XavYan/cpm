@@ -1,21 +1,25 @@
 #!/usr/bin/python3
 
-from os import listdir, getenv
-from os.path import isfile, isdir, join, splitext
 import argparse as argp
 
 import commands
 
 options = [
   'add',
-  'install'
+  'install',
+  'init'
 ]
+
+cms = {}
 
 parser = argp.ArgumentParser(prog="cpm")
 
 for option in options:
-  command = commands.initializeCommand(option)
-  parser.add_argument(command.short_option(), command.long_option(), help=command.help(), metavar=command.argument_name())
+  cms[option] = commands.initializeCommand(option)
+  if cms[option].short_option():
+    parser.add_argument(cms[option].short_option(), cms[option].long_option(), help=cms[option].help(), metavar=cms[option].argument_name())
+  else:
+    parser.add_argument(cms[option].long_option(), help=cms[option].help(), metavar=cms[option].argument_name())
 
 args = parser.parse_args()
 
@@ -25,4 +29,6 @@ if args.install and args.add:
 
 for arg, value in vars(args).items():
   if value:
-    print(arg, value)
+    cms[arg].execute(value)
+
+print("Done successfully!")

@@ -1,5 +1,8 @@
 from .interface import CommandInterface
 from decouple import config
+from os import mkdir
+from os.path import exists, join, isdir
+from shutil import copytree
 
 class CommandInstall(CommandInterface):
   def __init__ (self):
@@ -21,4 +24,16 @@ class CommandInstall(CommandInterface):
     return "--install"
 
   def execute (self, module):
-    pass
+    MODULE_PATH = join(config('DIR_PATH'), module)
+    if exists(MODULE_PATH) and isdir(MODULE_PATH):
+      print("Module", module, "exists")
+      self._import_module(module)
+    else:
+      raise FileNotFoundError
+
+  def _import_module (self, module):
+    if not exists(config('IMPORT_FOLDER')):
+      mkdir(config('IMPORT_FOLDER'))
+
+    MODULE_PATH = join(config('DIR_PATH'), module)
+    copytree(MODULE_PATH, join(config('IMPORT_FOLDER'), module))
