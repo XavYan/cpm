@@ -23,7 +23,7 @@ class CommandRemove(CommandInterface):
     def long_option(self):
         return "--remove"
 
-    def final_text(self):
+    def success_text(self):
         return "Module removed successfully"
 
     def execute(self, module):

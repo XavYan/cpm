@@ -16,7 +16,7 @@ cms = {}
 parser = argp.ArgumentParser(prog="cpm")
 
 for option in options:
-    cms[option] = commands.initializeCommand(option)
+    cms[option] = commands.initialize_command(option)
     if cms[option].short_option():
         parser.add_argument(cms[option].short_option(), cms[option].long_option(), help=cms[option].help(),
                             metavar=cms[option].argument_name())
@@ -33,7 +33,7 @@ try:
     for arg, value in vars(args).items():
         if value:
             cms[arg].execute(value)
-            print(cms[arg].final_text())
+            print(cms[arg].success_text())
             exit(0)
 except:
     exit(1)

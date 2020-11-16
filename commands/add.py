@@ -27,7 +27,7 @@ class CommandAdd(CommandInterface):
     def long_option(self):
         return "--add"
 
-    def final_text(self):
+    def success_text(self):
         return "Module added to " + config('DIR_PATH') + " successfully"
 
     def execute(self, module):
