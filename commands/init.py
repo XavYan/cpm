@@ -5,6 +5,7 @@ from decouple import config
 from os import makedirs
 from os.path import join
 
+
 class CommandInit(CommandInterface):
     def __str__(self):
         return "init"
