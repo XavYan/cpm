@@ -24,7 +24,7 @@ class CommandInstall(CommandInterface):
     def long_option(self):
         return "--install"
 
-    def final_text(self):
+    def success_text(self):
         return "Module installed successfully"
 
     def execute(self, module):

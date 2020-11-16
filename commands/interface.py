@@ -17,7 +17,7 @@ class CommandInterface:
     def long_option(self):
         raise NotImplementedError
 
-    def final_text(self):
+    def success_text(self):
         raise NotImplementedError
 
     def execute(self):

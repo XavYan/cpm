@@ -1,5 +1,6 @@
 from .interface import CommandInterface
 from .constants import BASE_DIR
+from makefile import Makefile
 
 from decouple import config
 from os import makedirs
@@ -22,13 +23,12 @@ class CommandInit(CommandInterface):
     def long_option(self):
         return "--init"
 
-    def final_text(self):
+    def success_text(self):
         return "Package directory created successfully"
 
     def execute(self, package):
         self._create_base_dir(package)
-        if config('MAKEFILE') == "True":
-            self._create_makefile(package)
+        Makefile.generate_makefile(package, package)
 
     @staticmethod
     def _create_base_dir(package):
@@ -38,18 +38,3 @@ class CommandInit(CommandInterface):
                     makedirs(join(package, key))
         except FileExistsError:
             print("Cannot execute init correctly:", package, "exists")
-
-    @staticmethod
-    def _create_makefile(package):
-        with open(join(package, 'Makefile'), 'w') as makefile:
-            makefile.write("CC=g++\n")
-            makefile.write("CFLAGS=-g -std=c++17 -Wall -Wextra -I$(INCLUDE) -Iutils\n")
-            makefile.write("INCLUDE=include\n")
-            makefile.write("BUILD=build\n")
-            makefile.write("SRC=src\n")
-            makefile.write("EXECUTABLE=" + package + ".out" + "\n")
-            makefile.write(
-                "all: $(INCLUDE)/*." + config('HEADER_EXT_FILE') + " $(SRC)/*." + config('SOURCE_EXT_FILE') + "\n")
-            makefile.write(
-                "\t$(CC) $(CFLAGS) -o $(EXECUTABLE) $(INCLUDE)/*." + config('HEADER_EXT_FILE') + " $(SRC)/*." + config(
-                    'SOURCE_EXT_FILE') + "\n")
