@@ -16,13 +16,12 @@ class Makefile:
         makefile.write(name + "=" + value + "\n")
 
     @staticmethod
-    def add_action(module, object_list=[], separator=True, template=False, path='./'):
+    def add_action(module, object_list=[], separator=True, path='./'):
         with open(join(path, 'Makefile'), 'a+') as makefile:
             makefile.write("build/{}.o:".format(module))
             makefile.write(" include/{}.h".format(module))
 
-            if not template:
-                makefile.write(" src/{}.cc".format(module))
+            makefile.write(" src/{}.cc".format(module))
 
             for obj in object_list:
                 makefile.write(" build/{}.o".format(obj))
@@ -31,8 +30,7 @@ class Makefile:
 
             makefile.write('\t$(CC) $(CFLAGS) -c -o build/{}.o'.format(module))
 
-            if not template:
-                makefile.write(" src/{}.cc".format(module))
+            makefile.write(" src/{}.cc".format(module))
 
             for obj in object_list:
                 makefile.write(' build/{}.o'.format(obj))
