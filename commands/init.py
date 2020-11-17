@@ -1,5 +1,5 @@
 from .interface import CommandInterface
-from .constants import BASE_DIR
+from ._constants import BASE_DIR
 from makefile import Makefile
 from sys import exc_info
 
