@@ -27,17 +27,41 @@ class CommandInstall(CommandInterface):
     def success_text(self):
         return "Module installed successfully"
 
-    def execute(self, module):
-        module_global_path = join(config('DIR_PATH'), module)
-        if exists(module_global_path) and isdir(module_global_path):
+    def execute(self, module, gl=False):
+        if not gl:
             self._import_module(module)
         else:
-            raise NotADirectoryError
+            self._import_gl_module(module)
 
     @staticmethod
     def _import_module(module):
-        if not exists(config('IMPORT_FOLDER')):
-            mkdir(config('IMPORT_FOLDER'))
+        try:
+            module_global_path = join(config('DIR_PATH'), module)
+            if exists(module_global_path) and isdir(module_global_path):
+                if not exists(config('IMPORT_FOLDER')):
+                    mkdir(config('IMPORT_FOLDER'))
 
-        module_global_path = join(config('DIR_PATH'), module)
-        copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
+                module_global_path = join(config('DIR_PATH'), module)
+                copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
+            else:
+                raise NotADirectoryError
+        except NotADirectoryError:
+            print("Cannot execute install:", module, "is not a directory or doesn't exists")
+            raise
+
+    @staticmethod
+    def _import_gl_module(module):
+        try:
+            if not exists(module):
+                raise FileNotFoundError
+            if not isdir(module):
+                raise NotADirectoryError
+
+            module_global_path = join(config('DIR_PATH'), module)
+            copytree(module, module_global_path)
+        except FileNotFoundError:
+            print("Cannot execute global install:", module, "does not exists")
+            raise
+        except NotADirectoryError:
+            print("Cannot execute global install:", module, "is not a directory")
+            raise

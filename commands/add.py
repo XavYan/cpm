@@ -29,7 +29,7 @@ class CommandAdd(CommandInterface):
     def success_text(self):
         return "Module added to " + config('DIR_PATH') + " successfully"
 
-    def execute(self, module):
+    def execute(self, module, gl=False):
         try:
             header_filename = 'include/{}.h'.format(module)
             source_filename = 'src/{}.cc'.format(module)

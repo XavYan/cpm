@@ -26,7 +26,7 @@ class CommandRemove(CommandInterface):
     def success_text(self):
         return "Module removed successfully"
 
-    def execute(self, module):
+    def execute(self, module, gl=False):
         try:
             filepath = join(config('IMPORT_FOLDER'), module)
             if exists(filepath):

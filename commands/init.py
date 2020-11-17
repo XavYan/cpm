@@ -27,7 +27,7 @@ class CommandInit(CommandInterface):
     def success_text(self):
         return "Package directory created successfully"
 
-    def execute(self, package):
+    def execute(self, package, gl=False):
         try:
             self._create_base_dir(package)
             Makefile.generate(package, package)
