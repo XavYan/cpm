@@ -1,6 +1,7 @@
 from .interface import CommandInterface
 from .constants import BASE_DIR
 from makefile import Makefile
+from sys import exc_info
 
 from decouple import config
 from os import makedirs
@@ -27,8 +28,17 @@ class CommandInit(CommandInterface):
         return "Package directory created successfully"
 
     def execute(self, package):
-        self._create_base_dir(package)
-        Makefile.generate(package, package)
+        try:
+            self._create_base_dir(package)
+            Makefile.generate(package, package)
+            with open('{}/src/main.cc'.format(package), 'w') as main:
+                main.write('#include <iostream>\n\n')
+                main.write('int main (int argc, char* argv[]) {\n')
+                main.write('\tstd::cout << "Hello World!\\n";\n')
+                main.write('}\n')
+        except:
+            print("Unexpected error:", exc_info())
+            raise
 
     @staticmethod
     def _create_base_dir(package):
