@@ -13,7 +13,7 @@ class CommandInstall(CommandInterface):
         return "install"
 
     def help(self):
-        return "Install module files inside {}".format(config('DIR_PATH'))
+        return "Install module from {} to {} project directory".format(config('DIR_PATH'), config('IMPORT_FOLDER'))
 
     def argument_name(self):
         return "module"
@@ -30,7 +30,6 @@ class CommandInstall(CommandInterface):
     def execute(self, module):
         module_global_path = join(config('DIR_PATH'), module)
         if exists(module_global_path) and isdir(module_global_path):
-            print("Module", module, "exists")
             self._import_module(module)
         else:
             raise NotADirectoryError
