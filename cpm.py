@@ -31,7 +31,7 @@ parser.add_argument('-g', '--global', action='store_true',
                     help="Use global methods instead", dest="gl")
 parser.add_argument('-b', '--build', action='store_true',
                     help="Compile and execute program. Use it in root directory")
-parser.add_argument('-n', '--run', action='store_true',
+parser.add_argument('-r', '--run', action='store_true',
                     help="Compile and execute program."
                          "It deletes the executable after executing. Use it in root directory")
 

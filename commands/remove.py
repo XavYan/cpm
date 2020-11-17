@@ -18,7 +18,7 @@ class CommandRemove(CommandInterface):
         return "Remove installed module"
 
     def short_option(self):
-        return "-r"
+        return "-R"
 
     def long_option(self):
         return "--remove"
