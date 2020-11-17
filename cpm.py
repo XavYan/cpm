@@ -2,7 +2,7 @@
 
 import argparse as argp
 from sys import argv, exc_info
-from os import getcwd
+from os import getcwd, remove
 from os.path import basename
 import commands
 import subprocess
@@ -27,15 +27,23 @@ for option in options:
     else:
         parser.add_argument(cms[option].long_option(), help=cms[option].help(), metavar=cms[option].argument_name())
 
-parser.add_argument('-g', '--global', action='store_true', help="Use global methods instead", dest="gl")
-parser.add_argument('-b', '--build', action='store_true', help="Compile and execute program. Use it in root directory")
+parser.add_argument('-g', '--global', action='store_true',
+                    help="Use global methods instead", dest="gl")
+parser.add_argument('-b', '--build', action='store_true',
+                    help="Compile and execute program. Use it in root directory")
+parser.add_argument('-n', '--run', action='store_true',
+                    help="Compile and execute program."
+                         "It deletes the executable after executing. Use it in root directory")
 
 args = parser.parse_args()
 
-if args.build:
+if args.build or args.run:
     subprocess.call('make')
     print('---------------------------------------')
-    subprocess.call('./{}'.format(basename(getcwd())))
+    executable = './{}'.format(basename(getcwd()))
+    subprocess.call(executable)
+    if args.run:
+        remove(executable)
     exit()
 
 if not args.gl and len(argv) > 3:
