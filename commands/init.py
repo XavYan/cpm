@@ -28,7 +28,7 @@ class CommandInit(CommandInterface):
 
     def execute(self, package):
         self._create_base_dir(package)
-        Makefile.generate_makefile(package, package)
+        Makefile.generate(package, package)
 
     @staticmethod
     def _create_base_dir(package):

@@ -4,7 +4,7 @@ from decouple import config
 
 class Makefile:
     @staticmethod
-    def generate_makefile(package, path='./'):
+    def generate(package, path='./'):
         with open(join(path, 'Makefile'), 'w') as makefile:
             Makefile.add_variable(makefile, "CC", config('MAKEFILE_COMPILER'))
             Makefile.add_variable(makefile, "CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
@@ -16,22 +16,53 @@ class Makefile:
         makefile.write(name + "=" + value + "\n")
 
     @staticmethod
-    def add_action(name, object_list=[], separator=True, path='./'):
+    def add_action(module, object_list=[], separator=True, template=False, path='./'):
         with open(join(path, 'Makefile'), 'a+') as makefile:
-            makefile.write("{}:".format(name))
+            makefile.write("build/{}.o:".format(module))
+            makefile.write(" include/{}.h".format(module))
+
+            if not template:
+                makefile.write(" src/{}.cc".format(module))
 
             for obj in object_list:
                 makefile.write(" build/{}.o".format(obj))
 
             makefile.write('\n')
 
-            makefile.write('\t$(CC) $(CFLAGS) -c -o {}'.format(name))
+            makefile.write('\t$(CC) $(CFLAGS) -c -o {}'.format(module))
+
+            if not template:
+                makefile.write(" src/{}.cc".format(module))
+
             for obj in object_list:
                 makefile.write(' build/{}.o'.format(obj))
-                # TODO: Finish this part
 
             if separator:
                 makefile.write('\n')
+
+            Makefile.update_all_with_module(join(path, 'Makefile'), module)
+
+    @staticmethod
+    def update_all_with_module(filename, module):
+        with open(filename, 'r') as makefile:
+            lines = makefile.readlines()
+
+        new_lines = []
+        all_detected = False
+        for line in lines:
+            if 'all:' in line:
+                new_line = " ".join([line.rstrip(), 'build/{}.o'.format(module)]) + '\n'
+                new_lines.append(new_line)
+                all_detected = True
+            elif all_detected:
+                new_line = " ".join([line.rstrip(), 'build/{}.o'.format(module)]) + '\n'
+                new_lines.append(new_line)
+                all_detected = False
+            else:
+                new_lines.append(line)
+
+        with open(filename, 'w') as makefile:
+            makefile.writelines(new_lines)
 
     @staticmethod
     def add_base_all_action(makefile, package, separator=True):
