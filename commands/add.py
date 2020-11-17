@@ -56,14 +56,3 @@ class CommandAdd(CommandInterface):
             print("Cannot execute add:", "file not found")
         except FileExistsError:
             print("Cannot execute add:", module, "already exists in this project")
-
-    def old_execute(self, module):
-        try:
-            files = listdir(module)
-            for file in files:
-                print(join(module, file))
-            copytree(module, join(config('DIR_PATH'), module))
-        except NotADirectoryError:
-            print("Cannot execute add:", module, "is not a directory")
-        except FileNotFoundError:
-            print("Cannot execute add: cannot found", module)
