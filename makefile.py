@@ -29,7 +29,7 @@ class Makefile:
 
             makefile.write('\n')
 
-            makefile.write('\t$(CC) $(CFLAGS) -c -o {}'.format(module))
+            makefile.write('\t$(CC) $(CFLAGS) -c -o build/{}.o'.format(module))
 
             if not template:
                 makefile.write(" src/{}.cc".format(module))
