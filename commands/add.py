@@ -15,9 +15,7 @@ class CommandAdd(CommandInterface):
         return "add"
 
     def help(self):
-        return "Add a new module to be imported in other projects. You need to include the name of the files, " \
-               "for example: 'cpm add common' to add common.{} and common.{}"\
-                .format(config('HEADER_EXT_FILE'), config('SOURCE_EXT_FILE'))
+        return "Create a new class to the project. Also includes it to Makefile for compiling"
 
     def argument_name(self):
         return "module"
