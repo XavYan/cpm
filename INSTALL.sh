@@ -19,3 +19,5 @@ fi
 
 pip3 install python-decouple
 ln -s $USER_HOME/.cpm_core/cpm.py /usr/local/bin/cpm
+
+echo "Installed successfully! Try cpm -h"
