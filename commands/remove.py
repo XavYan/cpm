@@ -27,11 +27,18 @@ class CommandRemove(CommandInterface):
         return "Module removed successfully"
 
     def execute(self, module, gl=False):
+        if gl:
+            self._remove_module(join(config('DIR_PATH'), module))
+        else:
+            self._remove_module(join(config('IMPORT_FOLDER'), module))
+
+    @staticmethod
+    def _remove_module(filepath):
         try:
-            filepath = join(config('IMPORT_FOLDER'), module)
             if exists(filepath):
                 rmtree(filepath)
             else:
                 raise FileNotFoundError
         except FileNotFoundError:
             print("Cannot execute remove: Cannot found", filepath, "directory")
+            raise
