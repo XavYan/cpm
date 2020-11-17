@@ -9,7 +9,8 @@ def initialize_command(command):
         'add': CommandAdd(),
         'install': CommandInstall(),
         'init': CommandInit(),
-        'remove': CommandRemove()
+        'remove': CommandRemove(),
+        'tadd': CommandAdd(template=True)
     }
 
     return commands[command]

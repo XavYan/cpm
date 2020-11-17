@@ -6,6 +6,7 @@ import commands
 
 options = [
     'add',
+    'tadd',
     'install',
     'init',
     'remove'
