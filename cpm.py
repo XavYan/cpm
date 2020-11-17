@@ -34,6 +34,6 @@ try:
         if value:
             cms[arg].execute(value)
             print(cms[arg].success_text())
-            exit(0)
 except:
+    print('Han error has occurred')
     exit(1)
