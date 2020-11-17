@@ -2,7 +2,10 @@
 
 import argparse as argp
 from sys import argv, exc_info
+from os import getcwd
+from os.path import basename
 import commands
+import subprocess
 
 options = [
     'add',
@@ -25,8 +28,15 @@ for option in options:
         parser.add_argument(cms[option].long_option(), help=cms[option].help(), metavar=cms[option].argument_name())
 
 parser.add_argument('-g', '--global', action='store_true', help="Use global methods instead", dest="gl")
+parser.add_argument('-b', '--build', action='store_true', help="Compile and execute program. Use it in root directory")
 
 args = parser.parse_args()
+
+if args.build:
+    subprocess.call('make')
+    print('---------------------------------------')
+    subprocess.call('./{}'.format(basename(getcwd())))
+    exit()
 
 if not args.gl and len(argv) > 3:
     print("You can only use one option")
