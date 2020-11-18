@@ -2,6 +2,10 @@ from os.path import join
 from decouple import config
 
 
+def filepath(folder, filename, ext):
+    return "{folder}/{filename}.{ext}".format(folder=folder, filename=filename, ext=ext)
+
+
 class Makefile:
     @staticmethod
     def generate(package, path='./'):
@@ -18,22 +22,22 @@ class Makefile:
     @staticmethod
     def add_action(module, object_list=[], separator=True, path='./'):
         with open(join(path, 'Makefile'), 'a+') as makefile:
-            makefile.write("build/{}.o:".format(module))
-            makefile.write(" include/{}.h".format(module))
+            makefile.write(filepath(config('BUILD'), module, 'o'))
+            makefile.write(" " + filepath(config('INCLUDE'), module, config('HEADER_EXT_FILE')))
 
-            makefile.write(" src/{}.cc".format(module))
+            makefile.write(" " + filepath(config('SRC'), module, config('SOURCE_EXT_FILE')))
 
             for obj in object_list:
-                makefile.write(" build/{}.o".format(obj))
+                makefile.write(" " + filepath(config('BUILD'), obj, 'o'))
 
             makefile.write('\n')
 
-            makefile.write('\t$(CC) $(CFLAGS) -c -o build/{}.o'.format(module))
+            makefile.write('\t$(CC) $(CFLAGS) -c -o ' + filepath(config('BUILD'), module, 'o'))
 
-            makefile.write(" src/{}.cc".format(module))
+            makefile.write(" " + filepath(config('SRC'), module, config('SOURCE_EXT_FILE')))
 
             for obj in object_list:
-                makefile.write(' build/{}.o'.format(obj))
+                makefile.write(' ' + filepath(config('BUILD'), obj, 'o'))
 
             if separator:
                 makefile.write('\n')
@@ -49,11 +53,11 @@ class Makefile:
         all_detected = False
         for line in lines:
             if 'all:' in line:
-                new_line = " ".join([line.rstrip(), 'build/{}.o'.format(module)]) + '\n'
+                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o') + '\n'])
                 new_lines.append(new_line)
                 all_detected = True
             elif all_detected:
-                new_line = " ".join([line.rstrip(), 'build/{}.o'.format(module)]) + '\n'
+                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o') + '\n'])
                 new_lines.append(new_line)
                 all_detected = False
             else:
@@ -64,8 +68,8 @@ class Makefile:
 
     @staticmethod
     def add_base_all_action(makefile, package, separator=True):
-        makefile.write('all: src/main.cc\n')
-        makefile.write('\t{compiler} {options} -o {package} src/main.cc'
-                       .format(compiler="$(CC)", options="$(CFLAGS)", package=package))
+        makefile.write('all:' + filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')) + '\n')
+        makefile.write('\t$(CC) $(CFLAGS) -o {package} '.format(package=package) +
+                       filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')))
         if separator:
             makefile.write('\n')
