@@ -1,14 +1,11 @@
-from .command_interface import CommandInterface
+from .command_arg_interface import CommandArgInterface
 from ._constants import BASE_DIR
 from makefile import Makefile
-from sys import exc_info
-
-from decouple import config
 from os import makedirs
 from os.path import join
 
 
-class CommandInit(CommandInterface):
+class CommandInit(CommandArgInterface):
     def __str__(self):
         return "init"
 
@@ -27,24 +24,26 @@ class CommandInit(CommandInterface):
     def success_text(self):
         return "Package directory created successfully"
 
-    def execute(self, package, gl=False):
+    def fail_text(self, message="Unexpected error"):
+        return "Cannot execute init correctly: {}".format(message)
+
+    def execute(self, arg, gl=False):
         try:
-            self._create_base_dir(package)
-            Makefile.generate(package, package)
-            with open('{}/src/main.cc'.format(package), 'w') as main:
+            self._create_base_dir(arg)
+            Makefile.generate(arg, arg)
+            with open('{}/src/main.cc'.format(arg), 'w') as main:
                 main.write('#include <iostream>\n\n')
                 main.write('int main (int argc, char* argv[]) {\n')
                 main.write('\tstd::cout << "Hello World!\\n";\n')
                 main.write('}\n')
+        except FileExistsError:
+            print(self.fail_text("{arg} exists".format(arg=arg)))
         except:
-            print("Unexpected error:", exc_info())
+            print(self.fail_text())
             raise
 
     @staticmethod
     def _create_base_dir(package):
-        try:
-            for key, value in BASE_DIR.items():
-                if value:
-                    makedirs(join(package, key))
-        except FileExistsError:
-            print("Cannot execute init correctly:", package, "exists")
+        for key, value in BASE_DIR.items():
+            if value:
+                makedirs(join(package, key))

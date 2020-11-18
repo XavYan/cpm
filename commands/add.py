@@ -1,13 +1,9 @@
-from .command_interface import CommandInterface
+from .command_arg_interface import CommandArgInterface
 from makefile import Makefile
-
-from decouple import config
-from os import listdir
-from os.path import join, exists
-from shutil import copytree
+from os.path import exists
 
 
-class CommandAdd(CommandInterface):
+class CommandAdd(CommandArgInterface):
     def __init__(self, template=False):
         super()
         self.template = template
@@ -17,13 +13,13 @@ class CommandAdd(CommandInterface):
             return "tadd"
         return "add"
 
+    def argument_name(self):
+        return "module"
+
     def help(self):
         if self.template:
             return "Create a new template class to the project"
         return "Create a new class to the project. Also includes it to Makefile for compiling"
-
-    def argument_name(self):
-        return "module"
 
     def short_option(self):
         if self.template:
@@ -40,18 +36,23 @@ class CommandAdd(CommandInterface):
             return "Created template class successfully"
         return "Created class successfully"
 
-    def execute(self, module, gl=False):
+    def fail_text(self, message="Unexpected error"):
+        if self.template:
+            return "Cannot execute tadd: {}".format(message)
+        return "Cannot execute add: {}".format(message)
+
+    def execute(self, arg, gl=False):
         try:
-            self._add_header_file(module, self.template)
+            self._add_header_file(arg, self.template)
 
             if not self.template:
-                self._add_source_file(module)
-                Makefile.add_action(module)
+                self._add_source_file(arg)
+                Makefile.add_action(arg)
 
         except FileNotFoundError:
-            print("Cannot execute add:", "file not found")
+            print(self.fail_text("file not found"))
         except FileExistsError:
-            print("Cannot execute add:", module, "already exists in this project")
+            print(self.fail_text("{} already exists in this project".format(arg)))
 
     @staticmethod
     def _add_header_file(module, template=False):
