@@ -16,7 +16,7 @@ done
 while IFS= read -r line
 do
   if [[ $line == *DIR_PATH* ]]; then
-    echo "DIR_PATH = \"$USER_HOME/cpm_modules\"" >> $USER_HOME/.cpm_core/.env
+    echo -e "DIR_PATH = \"$USER_HOME/cpm_modules\"" >> $USER_HOME/.cpm_core/.env
   else
     echo $line >> $USER_HOME/.cpm_core/.env
   fi
