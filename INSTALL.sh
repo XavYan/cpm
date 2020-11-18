@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 USER_HOME=/home/xavier
 
 if [ -e $USER_HOME/cpm_modules ]; then
