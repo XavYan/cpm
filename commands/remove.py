@@ -1,4 +1,4 @@
-from .interface import CommandInterface
+from .command_interface import CommandInterface
 from decouple import config
 from os.path import exists, join
 from shutil import rmtree

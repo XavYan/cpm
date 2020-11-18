@@ -1,4 +1,4 @@
-from .interface import CommandInterface
+from .command_interface import CommandInterface
 from makefile import Makefile
 
 from decouple import config

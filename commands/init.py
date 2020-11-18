@@ -1,4 +1,4 @@
-from .interface import CommandInterface
+from .command_interface import CommandInterface
 from ._constants import BASE_DIR
 from makefile import Makefile
 from sys import exc_info

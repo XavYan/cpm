@@ -5,8 +5,8 @@ class CommandInterface:
     def __str__(self):
         return "command"
 
-    def argument_name(self):
-        return "value"
+    def action(self):
+        raise NotImplementedError
 
     def help(self):
         raise NotImplementedError
@@ -20,5 +20,5 @@ class CommandInterface:
     def success_text(self):
         raise NotImplementedError
 
-    def execute(self):
-        pass
+    def fail_text(self):
+        raise NotImplementedError
