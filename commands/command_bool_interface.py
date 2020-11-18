@@ -5,6 +5,9 @@ class CommandBoolInterface(CommandInterface):
     def __str__(self):
         return "command"
 
+    def argument_name(self):
+        return ""
+
     def action(self):
         return "store_true"
 
