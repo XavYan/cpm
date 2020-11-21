@@ -64,8 +64,9 @@ if not args.gl and len(argv) > 3:
 try:
     for arg, value in vars(args).items():
         if value and arg != 'gl':
+            cms[arg].set_global(args.gl)
             if cms[arg].action() == "store":
-                cms[arg].execute(value, args.gl)
+                cms[arg].execute(value)
             else:
                 cms[arg].execute()
             print(cms[arg].success_text())

@@ -26,10 +26,10 @@ class CommandRemove(CommandArgInterface):
     def fail_text(self, message):
         return "Cannot execute remove: {}".format(message)
 
-    def execute(self, arg, gl=False):
+    def execute(self, arg):
         filepath = ""
         try:
-            if gl:
+            if self.gl:
                 filepath = join(config('DIR_PATH'), arg)
             else:
                 filepath = join(config('IMPORT_FOLDER'), arg)

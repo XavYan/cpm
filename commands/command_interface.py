@@ -1,9 +1,13 @@
 class CommandInterface:
     def __init__(self):
-        pass
+        self.gl = False
 
     def __str__(self):
         return "command"
+
+    def set_global(self, gl=False):
+        self.gl = gl
+        return self.gl
 
     def action(self):
         raise NotImplementedError

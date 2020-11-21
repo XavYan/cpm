@@ -41,7 +41,7 @@ class CommandAdd(CommandArgInterface):
             return "Cannot execute tadd: {}".format(message)
         return "Cannot execute add: {}".format(message)
 
-    def execute(self, arg, gl=False):
+    def execute(self, arg):
         try:
             self._add_header_file(arg, self.template)
 
