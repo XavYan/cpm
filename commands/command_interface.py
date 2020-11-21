@@ -24,5 +24,5 @@ class CommandInterface:
     def success_text(self):
         raise NotImplementedError
 
-    def fail_text(self, message):
-        raise NotImplementedError
+    def fail_text(self, message="Undefined error"):
+        return "Cannot execute {program}: {message}".format(program=self, message=message)

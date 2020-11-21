@@ -23,8 +23,5 @@ class CommandBoolInterface(CommandInterface):
     def success_text(self):
         raise NotImplementedError
 
-    def fail_text(self, message):
-        raise NotImplementedError
-
     def execute(self):
         raise NotImplementedError
