@@ -1,4 +1,4 @@
-from os import getcwd, remove
+from os import getcwd
 from os.path import basename, exists
 from .command_bool_interface import CommandBoolInterface
 import subprocess
@@ -6,7 +6,7 @@ import subprocess
 
 class CommandBuild(CommandBoolInterface):
     def __str__(self):
-        return "run"
+        return "build"
 
     def help(self):
         return "Compile and execute program without deleting it. Use it in root directory"
