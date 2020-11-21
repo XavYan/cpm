@@ -28,7 +28,8 @@ options = [
     'install',
     'init',
     'remove',
-    'run'
+    'run',
+    'build'
 ]
 
 cms = {}
@@ -45,8 +46,6 @@ for option in options:
 
 parser.add_argument('--global', '-g', action='store_true',
                     help="Use global methods instead", dest="gl")
-add_option(parser, '--build', short_option='-b', help_msg="Compile and execute program. Use it in root directory",
-           act="store_true")
 
 args = parser.parse_args()
 
