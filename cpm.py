@@ -49,13 +49,6 @@ parser.add_argument('--global', '-g', action='store_true',
 
 args = parser.parse_args()
 
-if args.build:
-    subprocess.call('make')
-    print('---------------------------------------')
-    executable = './{}'.format(basename(getcwd()))
-    subprocess.call(executable)
-    exit()
-
 if not args.gl and len(argv) > 3:
     print("You can only use one option")
     exit(1)
