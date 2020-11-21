@@ -1,5 +1,5 @@
 from os import getcwd, remove
-from os.path import basename
+from os.path import basename, exists
 from .command_bool_interface import CommandBoolInterface
 import subprocess
 
@@ -27,5 +27,6 @@ class CommandRun(CommandBoolInterface):
         subprocess.call('make')
         print('---------------------------------------')
         executable = './{}'.format(basename(getcwd()))
-        subprocess.call(executable)
-        remove(executable)
+        if exists(executable):
+            subprocess.call(executable)
+            remove(executable)
