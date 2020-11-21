@@ -7,6 +7,8 @@ from shutil import copytree
 
 class CommandInstall(CommandArgInterface):
     def __str__(self):
+        if self.gl:
+            return "global install"
         return "install"
 
     def help(self):
@@ -23,11 +25,6 @@ class CommandInstall(CommandArgInterface):
 
     def success_text(self):
         return "Module installed successfully"
-
-    def fail_text(self, message="Unexpected error"):
-        if not self.gl:
-            return "Cannot execute install: {}".format(message)
-        return "Cannot execute global install: {}".format(message)
 
     def execute(self, arg):
         try:

@@ -36,11 +36,6 @@ class CommandAdd(CommandArgInterface):
             return "Created template class successfully"
         return "Created class successfully"
 
-    def fail_text(self, message="Unexpected error"):
-        if self.template:
-            return "Cannot execute tadd: {}".format(message)
-        return "Cannot execute add: {}".format(message)
-
     def execute(self, arg):
         try:
             self._add_header_file(arg, self.template)

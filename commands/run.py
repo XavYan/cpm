@@ -20,9 +20,6 @@ class CommandRun(CommandBoolInterface):
     def success_text(self):
         return "Program ran successfully"
 
-    def fail_text(self, message="Undefined error"):
-        return "Cannot execute run: {}".format(message)
-
     def execute(self):
         subprocess.call('make')
         print('---------------------------------------')
@@ -30,3 +27,5 @@ class CommandRun(CommandBoolInterface):
         if exists(executable):
             subprocess.call(executable)
             remove(executable)
+        else:
+            print(self.fail_text("'{executable}' not found".format(executable=executable)))

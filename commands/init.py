@@ -24,9 +24,6 @@ class CommandInit(CommandArgInterface):
     def success_text(self):
         return "Package directory created successfully"
 
-    def fail_text(self, message="Unexpected error"):
-        return "Cannot execute init correctly: {}".format(message)
-
     def execute(self, arg):
         try:
             self._create_base_dir(arg)

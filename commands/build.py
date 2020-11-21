@@ -20,9 +20,6 @@ class CommandBuild(CommandBoolInterface):
     def success_text(self):
         return "Program built successfully"
 
-    def fail_text(self, message="Undefined error"):
-        return "Cannot execute {program}: {message}".format(program=self, message=message)
-
     def execute(self):
         subprocess.call('make')
         print('---------------------------------------')

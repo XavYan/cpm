@@ -23,9 +23,6 @@ class CommandRemove(CommandArgInterface):
     def success_text(self):
         return "Module removed successfully"
 
-    def fail_text(self, message):
-        return "Cannot execute remove: {}".format(message)
-
     def execute(self, arg):
         filepath = ""
         try:
