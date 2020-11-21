@@ -9,7 +9,7 @@ class CommandBuild(CommandBoolInterface):
         return "build"
 
     def help(self):
-        return "Compile and execute program without deleting it. Use it in root directory"
+        return "Compile the project, without executing it. Use it in root directory"
 
     def short_option(self):
         return "-b"
@@ -24,7 +24,5 @@ class CommandBuild(CommandBoolInterface):
         subprocess.call('make')
         print('---------------------------------------')
         executable = './{}'.format(basename(getcwd()))
-        if exists(executable):
-            subprocess.call(executable)
-        else:
+        if not exists(executable):
             print(self.fail_text())
