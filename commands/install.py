@@ -33,10 +33,10 @@ class CommandInstall(CommandArgInterface):
             else:
                 self._import_gl_module(arg)
         except FileNotFoundError:
-            print(self.fail_text("{} does not exists".format(arg), gl=True))
+            print(self.fail_text("{} does not exists".format(arg)))
             raise
         except NotADirectoryError:
-            print(self.fail_text("{} is not a directory".format(arg), gl=True))
+            print(self.fail_text("{} is not a directory".format(arg)))
             raise
 
     def _import_module(self, module):
