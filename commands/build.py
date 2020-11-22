@@ -1,7 +1,6 @@
-from os import getcwd
-from os.path import basename, exists
+from os.path import exists
 from .command_bool_interface import CommandBoolInterface
-import subprocess
+from ._projects_management import compile_project
 
 
 class CommandBuild(CommandBoolInterface):
@@ -21,8 +20,7 @@ class CommandBuild(CommandBoolInterface):
         return "Program built successfully"
 
     def execute(self):
-        subprocess.call('make')
+        executable = compile_project()
         print('---------------------------------------')
-        executable = './{}'.format(basename(getcwd()))
         if not exists(executable):
             print(self.fail_text())
