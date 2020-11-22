@@ -27,7 +27,7 @@ class CommandRemove(CommandArgInterface):
         filepath = ""
         try:
             if self.gl:
-                filepath = join(config('DIR_PATH'), arg)
+                filepath = join(config('DIR_PATH'), arg + '.' + config('COMPRESS_ALGORITHM'))
             else:
                 filepath = join(config('IMPORT_FOLDER'), arg)
             self._remove_module(filepath)
