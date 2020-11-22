@@ -2,7 +2,7 @@ from .command_arg_interface import CommandArgInterface
 from decouple import config
 from os import mkdir
 from os.path import exists, join, isdir
-from shutil import copytree
+from shutil import copytree, make_archive, unpack_archive
 
 
 class CommandInstall(CommandArgInterface):
@@ -40,18 +40,16 @@ class CommandInstall(CommandArgInterface):
             raise
 
     def _import_module(self, module):
-        module_global_path = join(config('DIR_PATH'), module)
+        module_global_path = join(config('DIR_PATH'), module + '.' + config('COMPRESS_ALGORITHM'))
 
         if not exists(module_global_path):
             raise FileNotFoundError
-        if not isdir(module_global_path):
-            raise NotADirectoryError
 
         if not exists(config('IMPORT_FOLDER')):
             mkdir(config('IMPORT_FOLDER'))
 
-        module_global_path = join(config('DIR_PATH'), module)
-        copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
+        self._decompress_module(module_global_path, config('IMPORT_FOLDER'))
+        # copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
 
     def _import_gl_module(self, module):
         if not exists(module):
@@ -60,4 +58,11 @@ class CommandInstall(CommandArgInterface):
             raise NotADirectoryError
 
         module_global_path = join(config('DIR_PATH'), module)
-        copytree(module, module_global_path)
+        self._compress_module(module, module_global_path)
+        # copytree(module, module_global_path)
+
+    def _compress_module(self, fromPath, toPath):
+        return make_archive(toPath, config('COMPRESS_ALGORITHM'), base_dir=fromPath)
+
+    def _decompress_module(self, fromPath, toPath):
+        return unpack_archive(fromPath, toPath)
