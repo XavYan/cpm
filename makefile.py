@@ -3,7 +3,7 @@ from decouple import config
 
 
 def filepath(folder, filename, ext):
-    return "{folder}/{filename}.{ext}".format(folder=folder, filename=filename, ext=ext)
+    return "{path}.{ext}".format(path=join(folder, filename), ext=ext)
 
 
 class Makefile:
@@ -43,6 +43,30 @@ class Makefile:
                 makefile.write('\n')
 
             Makefile.update_all_with_module(join(path, 'Makefile'), module)
+
+    @staticmethod
+    def update_all_with_util(filename, module):
+        with open(filename, 'r') as makefile:
+            lines = makefile.readlines()
+
+        build_util_folder = join(config('IMPORT_FOLDER'), module)
+
+        new_lines = []
+        all_detected = False
+        for line in lines:
+            if 'all:' in line:
+                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o') + '\n'])
+                new_lines.append(new_line)
+                all_detected = True
+            elif all_detected:
+                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o') + '\n'])
+                new_lines.append(new_line)
+                all_detected = False
+            else:
+                new_lines.append(line)
+
+        with open(filename, 'w') as makefile:
+            makefile.writelines(new_lines)
 
     @staticmethod
     def update_all_with_module(filename, module):

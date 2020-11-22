@@ -1,7 +1,8 @@
-from os import getcwd, remove
-from os.path import basename, exists
+from os import getcwd, remove, listdir
+from os.path import basename, exists, join
 from .command_bool_interface import CommandBoolInterface
 import subprocess
+from decouple import config
 
 
 class CommandRun(CommandBoolInterface):
@@ -21,6 +22,11 @@ class CommandRun(CommandBoolInterface):
         return "Program ran successfully"
 
     def execute(self):
+        if exists(config('IMPORT_FOLDER')):
+            modules = listdir(config('IMPORT_FOLDER'))
+            for module in modules:
+                subprocess.call(['make', '-C', '{folder}'.format(folder=join(config('IMPORT_FOLDER'), module))])
+                print('done')
         subprocess.call('make')
         print('---------------------------------------')
         executable = './{}'.format(basename(getcwd()))

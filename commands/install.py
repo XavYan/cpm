@@ -2,7 +2,8 @@ from .command_arg_interface import CommandArgInterface
 from decouple import config
 from os import mkdir
 from os.path import exists, join, isdir
-from shutil import copytree, make_archive, unpack_archive
+from shutil import make_archive, unpack_archive
+from makefile import Makefile
 
 
 class CommandInstall(CommandArgInterface):
@@ -49,6 +50,7 @@ class CommandInstall(CommandArgInterface):
             mkdir(config('IMPORT_FOLDER'))
 
         self._decompress_module(module_global_path, config('IMPORT_FOLDER'))
+        Makefile.update_all_with_util('Makefile', module)
         # copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
 
     def _import_gl_module(self, module):

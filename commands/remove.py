@@ -1,7 +1,7 @@
 from .command_arg_interface import CommandArgInterface
 from decouple import config
 from os.path import exists, join
-from shutil import rmtree
+from os import remove
 
 
 class CommandRemove(CommandArgInterface):
@@ -38,4 +38,4 @@ class CommandRemove(CommandArgInterface):
     def _remove_module(self, filepath):
         if not exists(filepath):
             raise FileNotFoundError
-        rmtree(filepath)
+        remove(filepath)
