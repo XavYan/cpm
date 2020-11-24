@@ -27,7 +27,8 @@ options = [
     'tadd',
     'init',
     'run',
-    'build'
+    'build',
+    'version'
 ]
 
 cms = {}

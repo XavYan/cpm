@@ -4,6 +4,7 @@ from .init import CommandInit
 from .remove import CommandRemove
 from .run import CommandRun
 from .build import CommandBuild
+from .version import CommandVersion
 
 
 def initialize_command(command):
@@ -12,7 +13,8 @@ def initialize_command(command):
         'init': CommandInit(),
         'tadd': CommandAdd(template=True),
         'run': CommandRun(),
-        'build': CommandBuild()
+        'build': CommandBuild(),
+        'version': CommandVersion()
     }
 
     return commands[command]
