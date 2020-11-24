@@ -25,9 +25,7 @@ def add_option(pars, long_option, short_option="", help_msg="", arg_name="", act
 options = [
     'add',
     'tadd',
-    'install',
     'init',
-    'remove',
     'run',
     'build'
 ]

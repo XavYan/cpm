@@ -9,9 +9,7 @@ from .build import CommandBuild
 def initialize_command(command):
     commands = {
         'add': CommandAdd(),
-        'install': CommandInstall(),
         'init': CommandInit(),
-        'remove': CommandRemove(),
         'tadd': CommandAdd(template=True),
         'run': CommandRun(),
         'build': CommandBuild()
