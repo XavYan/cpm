@@ -4,6 +4,9 @@ from .command_bool_interface import CommandBoolInterface
 
 
 class CommandVersion(CommandBoolInterface):
+    def __str__(self):
+        return "version"
+
     def help(self):
         return "Show actual installed version"
 
