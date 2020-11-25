@@ -22,7 +22,7 @@ class Makefile:
     @staticmethod
     def add_action(module, object_list=[], separator=True, path='./'):
         with open(join(path, 'Makefile'), 'a+') as makefile:
-            makefile.write(filepath(config('BUILD'), module, 'o'))
+            makefile.write(filepath(config('BUILD'), module, 'o') + ':')
             makefile.write(" " + filepath(config('INCLUDE'), module, config('HEADER_EXT_FILE')))
 
             makefile.write(" " + filepath(config('SRC'), module, config('SOURCE_EXT_FILE')))
@@ -43,6 +43,28 @@ class Makefile:
                 makefile.write('\n')
 
             Makefile.update_all_with_module(join(path, 'Makefile'), module)
+
+    @staticmethod
+    def delete_action(module):
+        with open('Makefile', 'r') as makefile:
+            lines = makefile.readlines()
+
+        action = join(config('BUILD'), module) + '.o'
+
+        new_lines = []
+        all_detected = False
+        action_line_detected = False
+        for line in lines:
+            if 'all:' in line or all_detected:
+                new_lines.append(line.replace(action, ""))
+                all_detected = not all_detected
+            elif (action + ':') in line or action_line_detected:
+                action_line_detected = not action_line_detected
+            else:
+                new_lines.append(line)
+
+        with open('Makefile', 'w') as makefile:
+            makefile.writelines(new_lines)
 
     @staticmethod
     def update_all_with_util(filename, module):
@@ -92,7 +114,7 @@ class Makefile:
 
     @staticmethod
     def add_base_all_action(makefile, package, separator=True):
-        makefile.write('all:' + filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')) + '\n')
+        makefile.write('all: ' + filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')) + '\n')
         makefile.write('\t$(CC) $(CFLAGS) -o {package} '.format(package=package) +
                        filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')))
         if separator:

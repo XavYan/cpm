@@ -1,4 +1,5 @@
 from .add import CommandAdd
+from .delete import CommandDelete
 from .install import CommandInstall
 from .init import CommandInit
 from .remove import CommandRemove
@@ -14,7 +15,8 @@ def initialize_command(command):
         'tadd': CommandAdd(template=True),
         'run': CommandRun(),
         'build': CommandBuild(),
-        'version': CommandVersion()
+        'version': CommandVersion(),
+        'delete': CommandDelete()
     }
 
     return commands[command]

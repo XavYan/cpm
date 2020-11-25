@@ -28,7 +28,8 @@ options = [
     'init',
     'run',
     'build',
-    'version'
+    'version',
+    'delete'
 ]
 
 cms = {}
