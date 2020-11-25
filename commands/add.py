@@ -1,6 +1,6 @@
-from .command_arg_interface import CommandArgInterface
-from makefile import Makefile
 from os.path import exists
+
+from .command_arg_interface import CommandArgInterface
 
 
 class CommandAdd(CommandArgInterface):

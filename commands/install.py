@@ -1,9 +1,10 @@
-from .command_arg_interface import CommandArgInterface
-from decouple import config
 from os import mkdir
 from os.path import exists, join, isdir
 from shutil import make_archive, unpack_archive
-from makefile import Makefile
+
+from decouple import config
+
+from .command_arg_interface import CommandArgInterface
 
 
 class CommandInstall(CommandArgInterface):

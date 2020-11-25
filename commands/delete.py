@@ -4,7 +4,6 @@ from os.path import exists, join
 from decouple import config
 
 from commands.command_arg_interface import CommandArgInterface
-from makefile import Makefile
 
 
 class CommandDelete(CommandArgInterface):

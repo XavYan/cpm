@@ -1,8 +1,8 @@
-from .command_arg_interface import CommandArgInterface
-from ._constants import BASE_DIR
-from makefile import Makefile
 from os import makedirs
 from os.path import join
+
+from ._constants import BASE_DIR
+from .command_arg_interface import CommandArgInterface
 
 
 class CommandInit(CommandArgInterface):
