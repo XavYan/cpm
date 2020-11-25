@@ -8,9 +8,9 @@ from makefile import Makefile
 
 
 class CommandDelete(CommandArgInterface):
-    def __init__(self):
+    def __init__(self, makefile):
         super()
-        self.makefile = Makefile()
+        self.makefile = makefile
 
     def __str__(self):
         return "delete"

@@ -6,8 +6,8 @@ from os.path import join
 
 
 class CommandInit(CommandArgInterface):
-    def __init__(self):
-        self.makefile = Makefile()
+    def __init__(self, makefile):
+        self.makefile = makefile
 
     def __str__(self):
         return "init"

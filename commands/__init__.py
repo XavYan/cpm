@@ -1,3 +1,4 @@
+from makefile import Makefile
 from .add import CommandAdd
 from .delete import CommandDelete
 from .install import CommandInstall
@@ -9,14 +10,17 @@ from .version import CommandVersion
 
 
 def initialize_command(command):
+
+    makefile_processor = Makefile()
+
     commands = {
-        'add': CommandAdd(),
-        'init': CommandInit(),
-        'tadd': CommandAdd(template=True),
+        'add': CommandAdd(makefile_processor),
+        'init': CommandInit(makefile_processor),
+        'tadd': CommandAdd(makefile_processor, template=True),
+        'delete': CommandDelete(makefile_processor),
         'run': CommandRun(),
         'build': CommandBuild(),
-        'version': CommandVersion(),
-        'delete': CommandDelete()
+        'version': CommandVersion()
     }
 
     return commands[command]

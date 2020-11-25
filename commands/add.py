@@ -4,9 +4,9 @@ from os.path import exists
 
 
 class CommandAdd(CommandArgInterface):
-    def __init__(self, template=False):
+    def __init__(self, makefile, template=False):
         super()
-        self.makefile = Makefile()
+        self.makefile = makefile
         self.template = template
 
     def __str__(self):

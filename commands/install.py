@@ -7,8 +7,8 @@ from makefile import Makefile
 
 
 class CommandInstall(CommandArgInterface):
-    def __init__(self):
-        self.makefile = Makefile()
+    def __init__(self, makefile):
+        self.makefile = makefile
 
     def __str__(self):
         if self.gl:
