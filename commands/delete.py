@@ -8,6 +8,10 @@ from makefile import Makefile
 
 
 class CommandDelete(CommandArgInterface):
+    def __init__(self):
+        super()
+        self.makefile = Makefile()
+
     def __str__(self):
         return "delete"
 
@@ -35,6 +39,6 @@ class CommandDelete(CommandArgInterface):
             if exists(source_file):
                 remove(source_file)
 
-            Makefile.delete_action(arg)
+            self.makefile.delete_action(arg)
         except FileNotFoundError:
             print(self.fail_text("File not found"))

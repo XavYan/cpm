@@ -6,6 +6,9 @@ from os.path import join
 
 
 class CommandInit(CommandArgInterface):
+    def __init__(self):
+        self.makefile = Makefile()
+
     def __str__(self):
         return "init"
 
@@ -27,7 +30,7 @@ class CommandInit(CommandArgInterface):
     def execute(self, arg):
         try:
             self._create_base_dir(arg)
-            Makefile.generate(arg, arg)
+            self.makefile.generate(arg, arg)
             with open('{}/src/main.cc'.format(arg), 'w') as main:
                 main.write('#include <iostream>\n\n')
                 main.write('int main (int argc, char* argv[]) {\n')

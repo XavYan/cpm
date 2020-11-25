@@ -6,6 +6,7 @@ from os.path import exists
 class CommandAdd(CommandArgInterface):
     def __init__(self, template=False):
         super()
+        self.makefile = Makefile()
         self.template = template
 
     def __str__(self):
@@ -42,7 +43,7 @@ class CommandAdd(CommandArgInterface):
 
             if not self.template:
                 self._add_source_file(arg)
-                Makefile.add_action(arg)
+                self.makefile.add_action(arg)
 
         except FileNotFoundError:
             print(self.fail_text("file not found"))

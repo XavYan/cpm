@@ -7,20 +7,17 @@ def filepath(folder, filename, ext):
 
 
 class Makefile:
-    @staticmethod
-    def generate(package, path='./'):
+    def generate(self, package, path='./'):
         with open(join(path, 'Makefile'), 'w') as makefile:
             Makefile.add_variable(makefile, "CC", config('MAKEFILE_COMPILER'))
             Makefile.add_variable(makefile, "CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
             makefile.write("\n")
             Makefile.add_base_all_action(makefile, package)
 
-    @staticmethod
-    def add_variable(makefile, name, value):
+    def add_variable(self, makefile, name, value):
         makefile.write(name + "=" + value + "\n")
 
-    @staticmethod
-    def add_action(module, object_list=[], separator=True, path='./'):
+    def add_action(self, module, object_list=[], separator=True, path='./'):
         with open(join(path, 'Makefile'), 'a+') as makefile:
             makefile.write(filepath(config('BUILD'), module, 'o') + ':')
             makefile.write(" " + filepath(config('INCLUDE'), module, config('HEADER_EXT_FILE')))
@@ -44,8 +41,7 @@ class Makefile:
 
             Makefile.update_all_with_module(join(path, 'Makefile'), module)
 
-    @staticmethod
-    def delete_action(module):
+    def delete_action(self, module):
         with open('Makefile', 'r') as makefile:
             lines = makefile.readlines()
 
@@ -66,8 +62,7 @@ class Makefile:
         with open('Makefile', 'w') as makefile:
             makefile.writelines(new_lines)
 
-    @staticmethod
-    def update_all_with_util(filename, module):
+    def update_all_with_util(self, filename, module):
         with open(filename, 'r') as makefile:
             lines = makefile.readlines()
 
@@ -90,8 +85,7 @@ class Makefile:
         with open(filename, 'w') as makefile:
             makefile.writelines(new_lines)
 
-    @staticmethod
-    def update_all_with_module(filename, module):
+    def update_all_with_module(self, filename, module):
         with open(filename, 'r') as makefile:
             lines = makefile.readlines()
 
@@ -112,8 +106,7 @@ class Makefile:
         with open(filename, 'w') as makefile:
             makefile.writelines(new_lines)
 
-    @staticmethod
-    def add_base_all_action(makefile, package, separator=True):
+    def add_base_all_action(self, makefile, package, separator=True):
         makefile.write('all: ' + filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')) + '\n')
         makefile.write('\t$(CC) $(CFLAGS) -o {package} '.format(package=package) +
                        filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')))

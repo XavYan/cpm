@@ -7,6 +7,9 @@ from makefile import Makefile
 
 
 class CommandInstall(CommandArgInterface):
+    def __init__(self):
+        self.makefile = Makefile()
+
     def __str__(self):
         if self.gl:
             return "global install"
@@ -50,7 +53,7 @@ class CommandInstall(CommandArgInterface):
             mkdir(config('IMPORT_FOLDER'))
 
         self._decompress_module(module_global_path, config('IMPORT_FOLDER'))
-        Makefile.update_all_with_util('Makefile', module)
+        self.makefile.update_all_with_util('Makefile', module)
         # copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
 
     def _import_gl_module(self, module):
