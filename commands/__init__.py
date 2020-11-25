@@ -1,4 +1,5 @@
 from makefile import Makefile
+from writer import Writer
 from .add import CommandAdd
 from .delete import CommandDelete
 from .install import CommandInstall
@@ -11,7 +12,8 @@ from .version import CommandVersion
 
 def initialize_command(command):
 
-    makefile_processor = Makefile()
+    writer = Writer()
+    makefile_processor = Makefile(writer)
 
     commands = {
         'add': CommandAdd(makefile_processor),

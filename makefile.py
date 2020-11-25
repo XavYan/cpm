@@ -1,49 +1,51 @@
 from os.path import join
 from decouple import config
 
+from writer import Writer
+
 
 def filepath(folder, filename, ext):
     return "{path}.{ext}".format(path=join(folder, filename), ext=ext)
 
 
 class Makefile:
+    def __init__(self, writer):
+        self.writer = writer
+
     def generate(self, package, path='./'):
-        with open(join(path, 'Makefile'), 'w') as makefile:
-            Makefile.add_variable(makefile, "CC", config('MAKEFILE_COMPILER'))
-            Makefile.add_variable(makefile, "CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
-            makefile.write("\n")
-            Makefile.add_base_all_action(makefile, package)
+        filename = join(path, 'Makefile')
+        self.add_variable(filename, "CC", config('MAKEFILE_COMPILER'))
+        self.add_variable(filename, "CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
+        self.writer.append_empty_line(filename)
+        self.add_base_all_action(filename, package)
 
-    def add_variable(self, makefile, name, value):
-        makefile.write(name + "=" + value + "\n")
+    def add_variable(self, filename, name, value):
+        line = name + "=" + value
+        self.writer.append_lines([line], filename)
 
-    def add_action(self, module, object_list=[], separator=True, path='./'):
-        with open(join(path, 'Makefile'), 'a+') as makefile:
-            makefile.write(filepath(config('BUILD'), module, 'o') + ':')
-            makefile.write(" " + filepath(config('INCLUDE'), module, config('HEADER_EXT_FILE')))
+    def add_action(self, module, object_list=[], path='./'):
+        build_module = filepath(config('BUILD'), module, 'o')
+        header_module = filepath(config('INCLUDE'), module, config('HEADER_EXT_FILE'))
+        source_module = filepath(config('SRC'), module, config('SOURCE_EXT_FILE'))
 
-            makefile.write(" " + filepath(config('SRC'), module, config('SOURCE_EXT_FILE')))
+        action_header_line = build_module + ': ' + ' '.join([header_module, source_module])
+        for obj in object_list:
+            action_header_line += " " + filepath(config('BUILD'), obj, 'o')
 
-            for obj in object_list:
-                makefile.write(" " + filepath(config('BUILD'), obj, 'o'))
+        action_source_line = '\t$(CC) $(CFLAGS) -c -o {build} {source}'.format(build=build_module, source=source_module)
+        for obj in object_list:
+            action_source_line += ' ' + filepath(config('BUILD'), obj, 'o')
 
-            makefile.write('\n')
+        lines = [
+            action_header_line,
+            action_source_line
+        ]
 
-            makefile.write('\t$(CC) $(CFLAGS) -c -o ' + filepath(config('BUILD'), module, 'o'))
-
-            makefile.write(" " + filepath(config('SRC'), module, config('SOURCE_EXT_FILE')))
-
-            for obj in object_list:
-                makefile.write(' ' + filepath(config('BUILD'), obj, 'o'))
-
-            if separator:
-                makefile.write('\n')
-
-            Makefile.update_all_with_module(join(path, 'Makefile'), module)
+        self.writer.append_lines(lines, module)
+        self.update_all_with_module(join(path, 'Makefile'), module)
 
     def delete_action(self, module):
-        with open('Makefile', 'r') as makefile:
-            lines = makefile.readlines()
+        lines = self.writer.read_lines('Makefile')
 
         action = join(config('BUILD'), module) + '.o'
 
@@ -59,12 +61,10 @@ class Makefile:
             else:
                 new_lines.append(line)
 
-        with open('Makefile', 'w') as makefile:
-            makefile.writelines(new_lines)
+        self.writer.write_lines(new_lines, 'Makefile')
 
     def update_all_with_util(self, filename, module):
-        with open(filename, 'r') as makefile:
-            lines = makefile.readlines()
+        lines = self.writer.read_lines(filename)
 
         build_util_folder = join(config('IMPORT_FOLDER'), module)
 
@@ -82,12 +82,10 @@ class Makefile:
             else:
                 new_lines.append(line)
 
-        with open(filename, 'w') as makefile:
-            makefile.writelines(new_lines)
+        self.writer.write_lines(new_lines, filename)
 
     def update_all_with_module(self, filename, module):
-        with open(filename, 'r') as makefile:
-            lines = makefile.readlines()
+        lines = self.writer.read_lines(filename)
 
         new_lines = []
         all_detected = False
@@ -103,12 +101,14 @@ class Makefile:
             else:
                 new_lines.append(line)
 
-        with open(filename, 'w') as makefile:
-            makefile.writelines(new_lines)
+        self.writer.write_lines(new_lines, filename)
 
-    def add_base_all_action(self, makefile, package, separator=True):
-        makefile.write('all: ' + filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')) + '\n')
-        makefile.write('\t$(CC) $(CFLAGS) -o {package} '.format(package=package) +
-                       filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE')))
+    def add_base_all_action(self, filename, package, separator=True):
+        path = filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE'))
+        lines = [
+            'all: {path}'.format(path=path),
+            '\t$(CC) $(CFLAGS) -o {package} {path}'.format(package=package, path=path)
+        ]
+        self.writer.append_lines(lines, filename)
         if separator:
-            makefile.write('\n')
+            self.writer.append_empty_line(filename)
