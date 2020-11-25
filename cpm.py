@@ -2,10 +2,8 @@
 
 import argparse as argp
 from sys import argv, exc_info
-from os import getcwd, remove
-from os.path import basename
+
 import commands
-import subprocess
 
 
 def add_option(pars, long_option, short_option="", help_msg="", arg_name="", act=""):
