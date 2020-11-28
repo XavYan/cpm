@@ -72,11 +72,11 @@ class Makefile:
         all_detected = False
         for line in lines:
             if 'all:' in line:
-                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o') + '\n'])
+                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o')])
                 new_lines.append(new_line)
                 all_detected = True
             elif all_detected:
-                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o') + '\n'])
+                new_line = " ".join([line.rstrip(), filepath(build_util_folder, module, 'o')])
                 new_lines.append(new_line)
                 all_detected = False
             else:
@@ -91,11 +91,11 @@ class Makefile:
         all_detected = False
         for line in lines:
             if 'all:' in line:
-                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o') + '\n'])
+                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o')])
                 new_lines.append(new_line)
                 all_detected = True
             elif all_detected:
-                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o') + '\n'])
+                new_line = " ".join([line.rstrip(), filepath(config('BUILD'), module, 'o')])
                 new_lines.append(new_line)
                 all_detected = False
             else:
@@ -104,10 +104,10 @@ class Makefile:
         self.writer.write_lines(new_lines, filename)
 
     def add_base_all_action(self, filename, package, separator=True):
-        path = filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE'))
+        source = filepath(config('SRC'), 'main', config('SOURCE_EXT_FILE'))
         lines = [
-            'all: {path}'.format(path=path),
-            '\t$(CC) $(CFLAGS) -o {package} {path}'.format(package=package, path=path)
+            'all: {source}'.format(source=source),
+            '\t$(CC) $(CFLAGS) -o {package} {source}'.format(package=package, source=source)
         ]
         self.writer.append_lines(lines, filename)
         if separator:
