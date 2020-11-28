@@ -20,15 +20,7 @@ def add_option(pars, long_option, short_option="", help_msg="", arg_name="", act
             pars.add_argument(long_option, help=help_msg, metavar=arg_name, action=act)
 
 
-options = [
-    'add',
-    'tadd',
-    'init',
-    'run',
-    'build',
-    'version',
-    'delete'
-]
+options = commands.command_list()
 
 cms = {}
 
