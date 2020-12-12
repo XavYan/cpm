@@ -54,7 +54,7 @@ class Makefile:
         action_line_detected = False
         for line in lines:
             if 'all:' in line or all_detected:
-                new_lines.append(line.replace(action, ""))
+                new_lines.append(line.replace(action, "").rstrip())
                 all_detected = not all_detected
             elif (action + ':') in line or action_line_detected:
                 action_line_detected = not action_line_detected
