@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from commands import CommandAdd
 from makefile import Makefile
-from tests.writefake import WriterFake
+from tests.writerfake import WriterFake
 
 
 class TestCommandAdd(TestCase):

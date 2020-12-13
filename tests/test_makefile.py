@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from makefile import Makefile
-from tests.writefake import WriterFake
+from tests.writerfake import WriterFake
 
 
 class TestMakefile(TestCase):
