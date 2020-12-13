@@ -23,7 +23,10 @@ class CommandBuild(CommandBoolInterface):
         return "Program built successfully"
 
     def execute(self):
-        executable = self.makefile.compile_project()
+        executable = self._compile_project()
         print('---------------------------------------')
         if not exists(executable):
             print(self.fail_text())
+
+    def _compile_project(self):
+        return self.makefile.compile_project()
