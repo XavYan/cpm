@@ -1,3 +1,6 @@
+from os import makedirs
+
+
 class Writer:
     def __init__(self):
         pass
@@ -9,7 +12,7 @@ class Writer:
 
     def write_lines(self, lines, filename):
         with open(filename, 'w') as file:
-            file.writelines(lines)
+            file.writelines(map(lambda line: line.rstrip() + '\n', lines))
 
     def append_lines(self, lines, filename):
         with open(filename, 'a+') as file:
@@ -19,3 +22,6 @@ class Writer:
     def append_empty_line(self, filename):
         with open(filename, 'a+') as file:
             file.write('\n')
+
+    def create_new_folder(self, filename):
+        makedirs(filename)

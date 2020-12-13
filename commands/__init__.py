@@ -14,7 +14,7 @@ makefile_processor = Makefile(writer)
 
 commands = {
     'add': CommandAdd(makefile_processor),
-    'init': CommandInit(makefile_processor),
+    'init': CommandInit(makefile_processor, writer),
     'tadd': CommandAdd(makefile_processor, template=True),
     'delete': CommandDelete(makefile_processor),
     'run': CommandRun(),
