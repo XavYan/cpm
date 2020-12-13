@@ -16,7 +16,7 @@ class CommandAdd(CommandArgInterface):
         return "add"
 
     def argument_name(self):
-        return "module"
+        return "class"
 
     def help(self):
         if self.template:
