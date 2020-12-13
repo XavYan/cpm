@@ -17,7 +17,7 @@ commands = {
     'init': CommandInit(makefile_processor, writer),
     'tadd': CommandAdd(makefile_processor, writer, template=True),
     'delete': CommandDelete(makefile_processor, writer),
-    'run': CommandRun(makefile_processor),
+    'run': CommandRun(makefile_processor, writer),
     'build': CommandBuild(makefile_processor),
     'version': CommandVersion()
 }

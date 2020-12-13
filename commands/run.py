@@ -1,13 +1,11 @@
-from os import remove
-from os.path import exists
 from .command_bool_interface import CommandBoolInterface
-import subprocess
 
 
 class CommandRun(CommandBoolInterface):
-    def __init__(self, makefile):
+    def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile
+        self.writer = writer
 
     def __str__(self):
         return "run"
@@ -27,8 +25,8 @@ class CommandRun(CommandBoolInterface):
     def execute(self):
         executable = self.makefile.compile_project()
         print('---------------------------------------')
-        if exists(executable):
-            subprocess.call(executable)
-            remove(executable)
+        if self.writer.exists_file(executable):
+            self.makefile.execute_file(executable)
+            self.writer.remove_file(executable)
         else:
-            print(self.fail_text("'{executable}' not found".format(executable=executable)))
+            print(self.fail_text(f"'{executable}' not found"))

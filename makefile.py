@@ -121,3 +121,6 @@ class Makefile:
                 subprocess.call(['make', '-C', '{folder}'.format(folder=join(import_folder_location, module))])
         subprocess.call('make')
         return join(path, basename(getcwd()))
+
+    def execute_file(self, filename):
+        subprocess.call(filename)
