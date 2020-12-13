@@ -1,4 +1,4 @@
-from os import makedirs
+from os import makedirs, remove
 
 
 class Writer:
@@ -25,3 +25,6 @@ class Writer:
 
     def create_new_folder(self, filename):
         makedirs(filename)
+
+    def remove_file(self, filename):
+        remove(filename)

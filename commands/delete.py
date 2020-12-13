@@ -7,9 +7,10 @@ from commands.command_arg_interface import CommandArgInterface
 
 
 class CommandDelete(CommandArgInterface):
-    def __init__(self, makefile):
-        super()
+    def __init__(self, makefile, writer):
+        super().__init__()
         self.makefile = makefile
+        self.writer = writer
 
     def __str__(self):
         return "delete"
@@ -34,9 +35,9 @@ class CommandDelete(CommandArgInterface):
             source_file = join(config('SRC'), arg + '.' + config('SOURCE_EXT_FILE'))
             header_file = join(config('INCLUDE'), arg + '.' + config('HEADER_EXT_FILE'))
 
-            remove(header_file)
+            self.writer.remove_file(header_file)
             if exists(source_file):
-                remove(source_file)
+                self.writer.remove_file(source_file)
 
             self.makefile.delete_action(arg)
         except FileNotFoundError:
