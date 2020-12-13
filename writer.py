@@ -1,4 +1,5 @@
 from os import makedirs, remove
+from os.path import exists
 
 
 class Writer:
@@ -27,4 +28,9 @@ class Writer:
         makedirs(filename)
 
     def remove_file(self, filename):
+        if not self.exists_file(filename):
+            raise FileNotFoundError
         remove(filename)
+
+    def exists_file(self, filename):
+        return exists(filename)

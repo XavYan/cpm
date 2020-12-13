@@ -1,10 +1,15 @@
 from copy import deepcopy
 
+from writer import Writer
 
-class WriterFake:
+
+class WriterFake(Writer):
     def __init__(self):
+        super().__init__()
+        self.removed_files = []
         self.lines = []
         self.last_created_folders = []
+        self.exists_file_response = True
 
     def set_lines(self, lines):
         self.lines = deepcopy(lines)
@@ -29,6 +34,18 @@ class WriterFake:
 
     def create_new_folder(self, filename):
         self.last_created_folders.append(filename)
+        
+    def remove_file(self, filename):
+        self.removed_files.append(filename)
+
+    def get_removed_files(self):
+        return self.removed_files
 
     def get_created_folders(self):
         return self.last_created_folders
+
+    def exists_file(self, filename):
+        return self.exists_file_response
+
+    def set_exists_file(self, exists):
+        self.exists_file_response = exists

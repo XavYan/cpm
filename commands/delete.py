@@ -1,5 +1,4 @@
-from os import remove
-from os.path import exists, join
+from os.path import join
 
 from decouple import config
 
@@ -36,9 +35,10 @@ class CommandDelete(CommandArgInterface):
             header_file = join(config('INCLUDE'), arg + '.' + config('HEADER_EXT_FILE'))
 
             self.writer.remove_file(header_file)
-            if exists(source_file):
+            if self.writer.exists_file(source_file):
                 self.writer.remove_file(source_file)
 
             self.makefile.delete_action(arg)
         except FileNotFoundError:
             print(self.fail_text("File not found"))
+            raise
