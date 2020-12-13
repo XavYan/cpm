@@ -1,7 +1,7 @@
-from os.path import join
+import subprocess
+from os import listdir, getcwd
+from os.path import join, exists, basename
 from decouple import config
-
-from writer import Writer
 
 
 def filepath(folder, filename, ext):
@@ -112,3 +112,12 @@ class Makefile:
         self.writer.append_lines(lines, filename)
         if separator:
             self.writer.append_empty_line(filename)
+
+    def compile_project(self, path='./'):
+        import_folder_location = join(path, config('IMPORT_FOLDER'))
+        if exists(import_folder_location):
+            modules = listdir(import_folder_location)
+            for module in modules:
+                subprocess.call(['make', '-C', '{folder}'.format(folder=join(import_folder_location, module))])
+        subprocess.call('make')
+        return join(path, basename(getcwd()))

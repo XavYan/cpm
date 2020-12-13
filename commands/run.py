@@ -2,10 +2,13 @@ from os import remove
 from os.path import exists
 from .command_bool_interface import CommandBoolInterface
 import subprocess
-from ._projects_management import compile_project
 
 
 class CommandRun(CommandBoolInterface):
+    def __init__(self, makefile):
+        super().__init__()
+        self.makefile = makefile
+
     def __str__(self):
         return "run"
 
@@ -22,7 +25,7 @@ class CommandRun(CommandBoolInterface):
         return "Program ran successfully"
 
     def execute(self):
-        executable = compile_project()
+        executable = self.makefile.compile_project()
         print('---------------------------------------')
         if exists(executable):
             subprocess.call(executable)

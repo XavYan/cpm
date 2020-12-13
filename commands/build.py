@@ -1,9 +1,12 @@
 from os.path import exists
 from .command_bool_interface import CommandBoolInterface
-from ._projects_management import compile_project
 
 
 class CommandBuild(CommandBoolInterface):
+    def __init__(self, makefile):
+        super().__init__()
+        self.makefile = makefile
+
     def __str__(self):
         return "build"
 
@@ -20,7 +23,7 @@ class CommandBuild(CommandBoolInterface):
         return "Program built successfully"
 
     def execute(self):
-        executable = compile_project()
+        executable = self.makefile.compile_project()
         print('---------------------------------------')
         if not exists(executable):
             print(self.fail_text())
