@@ -4,9 +4,10 @@ from .command_arg_interface import CommandArgInterface
 
 
 class CommandAdd(CommandArgInterface):
-    def __init__(self, makefile, template=False):
-        super()
+    def __init__(self, makefile, writer, template=False):
+        super().__init__()
         self.makefile = makefile
+        self.writer = writer
         self.template = template
 
     def __str__(self):
@@ -50,35 +51,65 @@ class CommandAdd(CommandArgInterface):
         except FileExistsError:
             print(self.fail_text("{} already exists in this project".format(arg)))
 
-    @staticmethod
-    def _add_header_file(module, template=False):
+    def _add_header_file(self, module, template=False):
         header_filename = 'include/{}.h'.format(module)
 
         if exists(header_filename):
             raise FileExistsError
 
-        with open(header_filename, 'w') as file:
-            file.write('#pragma once\n\n')
+        lines = [
+            '#pragma once',
+            '\n'
+        ]
 
-            if template:
-                file.write('template<class T>\n')
+        if template:
+            lines.append('template<class T>')
 
-            file.write('class {} {{\n'.format(module))
-            file.write('public:\n')
-            file.write('\t{}();\n'.format(module))
-            file.write('};\n')
+        lines.extend([
+            'class {module} {{'.format(module=module),
+            'public:',
+            '\t{module}();'.format(module=module),
+            '};'
+        ])
 
-            if template:
-                file.write('\ntemplate<class T>\n')
-                file.write('{module}<T>::{module}() {{}}\n'.format(module=module))
+        if template:
+            lines.extend([
+                '\n',
+                'template<class T>',
+                '{module}<T>::{module}() {{}}'.format(module=module)
+            ])
 
-    @staticmethod
-    def _add_source_file(module):
-        source_filename = 'src/{}.cc'.format(module)
+        self.writer.write_lines(lines, header_filename)
+
+        # with open(header_filename, 'w') as file:
+        #     file.write('#pragma once\n\n')
+        #
+        #     if template:
+        #         file.write('template<class T>\n')
+        #
+        #     file.write('class {} {{\n'.format(module))
+        #     file.write('public:\n')
+        #     file.write('\t{}();\n'.format(module))
+        #     file.write('};\n')
+        #
+        #     if template:
+        #         file.write('\ntemplate<class T>\n')
+        #         file.write('{module}<T>::{module}() {{}}\n'.format(module=module))
+
+    def _add_source_file(self, module):
+        source_filename = 'src/{module}.cc'.format(module=module)
 
         if exists(source_filename):
             raise FileExistsError
 
-        with open(source_filename, 'w') as file:
-            file.write('#include <{}.h>\n\n'.format(module))
-            file.write('{module}::{module}() {{}}\n'.format(module=module))
+        lines = [
+            '#include <{module}.h>'.format(module=module),
+            '\n',
+            '{module}::{module}() {{}}'.format(module=module)
+        ]
+
+        self.writer.write_lines(lines, source_filename)
+
+        # with open(source_filename, 'w') as file:
+        #     file.write('#include <{module}.h>\n\n'.format(module=module))
+        #     file.write('{module}::{module}() {{}}\n'.format(module=module))
