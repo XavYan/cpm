@@ -1,6 +1,10 @@
 #!/usr/bin/bash
 
-USER_HOME=/home/xavier
+if [ -n "$SUDO_USER" ]; then
+  USER_HOME=/home/$SUDO_USER
+else
+  USER_HOME=/home/$USER
+fi
 
 rm -rf $USER_HOME/.cpm_core
 rm /usr/local/bin/cpm
