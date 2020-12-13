@@ -1,5 +1,5 @@
 from os import mkdir
-from os.path import exists, join, isdir
+from os.path import join, isdir
 from shutil import make_archive, unpack_archive
 
 from decouple import config
@@ -8,8 +8,10 @@ from .command_arg_interface import CommandArgInterface
 
 
 class CommandInstall(CommandArgInterface):
-    def __init__(self, makefile):
+    def __init__(self, makefile, writer):
+        super().__init__()
         self.makefile = makefile
+        self.writer = writer
 
     def __str__(self):
         if self.gl:
@@ -47,10 +49,10 @@ class CommandInstall(CommandArgInterface):
     def _import_module(self, module):
         module_global_path = join(config('DIR_PATH'), module + '.' + config('COMPRESS_ALGORITHM'))
 
-        if not exists(module_global_path):
+        if not self.writer.exists_file(module_global_path):
             raise FileNotFoundError
 
-        if not exists(config('IMPORT_FOLDER')):
+        if not self.writer.exists_file(config('IMPORT_FOLDER')):
             mkdir(config('IMPORT_FOLDER'))
 
         self._decompress_module(module_global_path, config('IMPORT_FOLDER'))
@@ -58,7 +60,7 @@ class CommandInstall(CommandArgInterface):
         # copytree(module_global_path, join(config('IMPORT_FOLDER'), module))
 
     def _import_gl_module(self, module):
-        if not exists(module):
+        if not self.writer.exists_file(module):
             raise FileNotFoundError
         if not isdir(module):
             raise NotADirectoryError
@@ -67,8 +69,8 @@ class CommandInstall(CommandArgInterface):
         self._compress_module(module, module_global_path)
         # copytree(module, module_global_path)
 
-    def _compress_module(self, fromPath, toPath):
-        return make_archive(toPath, config('COMPRESS_ALGORITHM'), base_dir=fromPath)
+    def _compress_module(self, from_path, to_path):
+        return make_archive(to_path, config('COMPRESS_ALGORITHM'), base_dir=from_path)
 
-    def _decompress_module(self, fromPath, toPath):
-        return unpack_archive(fromPath, toPath)
+    def _decompress_module(self, from_path, to_path):
+        return unpack_archive(from_path, to_path)

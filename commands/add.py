@@ -1,5 +1,3 @@
-from os.path import exists
-
 from .command_arg_interface import CommandArgInterface
 
 
@@ -54,7 +52,7 @@ class CommandAdd(CommandArgInterface):
     def _add_header_file(self, module, template=False):
         header_filename = 'include/{}.h'.format(module)
 
-        if exists(header_filename):
+        if self.writer.exists_file(header_filename):
             raise FileExistsError
 
         lines = [
@@ -81,25 +79,10 @@ class CommandAdd(CommandArgInterface):
 
         self.writer.write_lines(lines, header_filename)
 
-        # with open(header_filename, 'w') as file:
-        #     file.write('#pragma once\n\n')
-        #
-        #     if template:
-        #         file.write('template<class T>\n')
-        #
-        #     file.write('class {} {{\n'.format(module))
-        #     file.write('public:\n')
-        #     file.write('\t{}();\n'.format(module))
-        #     file.write('};\n')
-        #
-        #     if template:
-        #         file.write('\ntemplate<class T>\n')
-        #         file.write('{module}<T>::{module}() {{}}\n'.format(module=module))
-
     def _add_source_file(self, module):
         source_filename = 'src/{module}.cc'.format(module=module)
 
-        if exists(source_filename):
+        if self.writer.exists_file(source_filename):
             raise FileExistsError
 
         lines = [
@@ -109,7 +92,3 @@ class CommandAdd(CommandArgInterface):
         ]
 
         self.writer.write_lines(lines, source_filename)
-
-        # with open(source_filename, 'w') as file:
-        #     file.write('#include <{module}.h>\n\n'.format(module=module))
-        #     file.write('{module}::{module}() {{}}\n'.format(module=module))

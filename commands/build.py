@@ -1,11 +1,11 @@
-from os.path import exists
 from .command_bool_interface import CommandBoolInterface
 
 
 class CommandBuild(CommandBoolInterface):
-    def __init__(self, makefile):
+    def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile
+        self.writer = writer
 
     def __str__(self):
         return "build"
@@ -25,7 +25,7 @@ class CommandBuild(CommandBoolInterface):
     def execute(self):
         executable = self._compile_project()
         print('---------------------------------------')
-        if not exists(executable):
+        if not self.writer.exists_file(executable):
             print(self.fail_text())
 
     def _compile_project(self):

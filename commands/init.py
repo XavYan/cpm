@@ -1,4 +1,3 @@
-from os import makedirs
 from os.path import join
 
 from ._constants import BASE_DIRS
