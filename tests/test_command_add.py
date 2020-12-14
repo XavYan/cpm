@@ -40,6 +40,8 @@ class TestCommandAdd(TestCase):
             '};'
         ]
 
+        self.writerfake.set_exists_file(False)
+
         self.cmd_add._add_header_file(self.module)
 
         self.assertEqual(expected_lines, self.writerfake.get_lines())
@@ -50,6 +52,8 @@ class TestCommandAdd(TestCase):
             '\n',
             '{module}::{module}() {{}}'.format(module=self.module)
         ]
+
+        self.writerfake.set_exists_file(False)
 
         self.cmd_add._add_source_file(self.module)
 

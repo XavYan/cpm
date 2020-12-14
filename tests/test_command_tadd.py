@@ -38,6 +38,8 @@ class TestCommandTemplateAdd(TestCase):
             '{module}<T>::{module}() {{}}'.format(module=self.module)
         ]
 
+        self.writerfake.set_exists_file(False)
+
         self.cmd_tadd._add_header_file(self.module, template=True)
 
         self.assertEqual(expected_lines, self.writerfake.get_lines())

@@ -10,7 +10,7 @@ class TestCommandBuild(TestCase):
         self.project_name = "matrix"
         self.writerfake = WriterFake()
         self.mkfake = MakefileFake(self.writerfake, self.project_name)
-        self.cmd_build = CommandBuild(self.mkfake)
+        self.cmd_build = CommandBuild(self.mkfake, self.writerfake)
 
     def test_str_is_build(self):
         self.assertEqual(self.cmd_build.__str__(), "build")
