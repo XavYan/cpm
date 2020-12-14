@@ -33,7 +33,7 @@ if [ ! -e $USER_HOME/cpm_modules ]; then
   chmod 777 $USER_HOME/cpm_modules
 fi
 
-pip3 install python-decouple
+pip3 install -r requirements.txt
 ln -s $USER_HOME/.cpm_core/cpm.py /usr/local/bin/cpm
 
 echo "Installed successfully! Try cpm -h"
