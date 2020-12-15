@@ -1,5 +1,6 @@
 import random
 import subprocess
+from os import chdir, getcwd
 
 from .command_bool_interface import CommandBoolInterface
 
@@ -24,6 +25,8 @@ class CommandUpdate(CommandBoolInterface):
         # Clone git project to /tmp
         url_repository = 'https://github.com/XavYan/cpm'
         dst_folder = f'/tmp/cpm_{random.randint(1,10000)}'
+        actual_folder = getcwd()
+
         subprocess.call(['git', 'clone', url_repository, dst_folder])
         # TODO: Verify versions
         # TODO: If local version is lower than remote version, proceed
@@ -32,7 +35,9 @@ class CommandUpdate(CommandBoolInterface):
         subprocess.call(['bash', f'{dst_folder}/UNINSTALL.sh'])
         # -> Execute INSTALL.sh
         print(f"Installing cpm: 'bash {dst_folder}/INSTALL.sh'")
-        subprocess.call(['bash', f'{dst_folder}/INSTALL.sh'])
+        chdir(dst_folder)
+        subprocess.call(['bash', './INSTALL.sh'])
+        chdir(actual_folder)
         # Delete cloned repository
         print(f"Removing {dst_folder}")
         subprocess.call(['rm', '-rf', dst_folder])
