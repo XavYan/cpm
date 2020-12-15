@@ -13,7 +13,7 @@ fi
 mkdir $USER_HOME/.cpm_core
 chmod 777 $USER_HOME/.cpm_core
 
-file_list="commands *.py"
+file_list="commands *.py INSTALL.sh UNINSTALL.sh"
 
 for file in $file_list; do
   cp -R $file $USER_HOME/.cpm_core/

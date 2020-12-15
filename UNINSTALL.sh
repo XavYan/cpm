@@ -6,6 +6,8 @@ else
   USER_HOME=/home/$USER
 fi
 
+pip3 uninstall .
+
 rm -rf $USER_HOME/.cpm_core
 rm /usr/local/bin/cpm
 
