@@ -32,10 +32,10 @@ class CommandUpdate(CommandBoolInterface):
         # TODO: If local version is lower than remote version, proceed
         # -> Execute UNINSTALL.sh
         print(f"Uninstalling cpm: 'bash {dst_folder}/UNINSTALL.sh'")
-        subprocess.call(['bash', f'{dst_folder}/UNINSTALL.sh'])
+        chdir(dst_folder)
+        subprocess.call(['bash', './UNINSTALL.sh'])
         # -> Execute INSTALL.sh
         print(f"Installing cpm: 'bash {dst_folder}/INSTALL.sh'")
-        chdir(dst_folder)
         subprocess.call(['bash', './INSTALL.sh'])
         chdir(actual_folder)
         # Delete cloned repository

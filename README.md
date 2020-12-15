@@ -28,8 +28,8 @@ $ sudo ./INSTALL.sh
 Just that! Now you can verify the installation making `cpm --version`.
 
 ## Updating
-If you want to update this project, `cpm` has an option to do that. Simply do `cpm --update` and leave the rest
-to the command.
+If you want to update this project, clone again this repository, and execute `sudo ./UNINSTALL`
+and `sudo ./INSTALL` respectively. This will remove and install the new version.
 
 ## Uninstallation
 If you want to uninstall this project, use:

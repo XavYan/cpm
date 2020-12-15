@@ -20,8 +20,7 @@ commands = {
     'delete': CommandDelete(makefile_processor, writer),
     'run': CommandRun(makefile_processor, writer),
     'build': CommandBuild(makefile_processor, writer),
-    'version': CommandVersion(),
-    'update': CommandUpdate()
+    'version': CommandVersion()
 }
 
 
