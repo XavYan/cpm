@@ -13,7 +13,7 @@ fi
 mkdir $USER_HOME/.cpm_core
 chmod 777 $USER_HOME/.cpm_core
 
-file_list="commands cpm.py makefile.py"
+file_list="commands *.py"
 
 for file in $file_list; do
   cp -R $file $USER_HOME/.cpm_core/
