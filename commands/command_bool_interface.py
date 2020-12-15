@@ -6,7 +6,7 @@ class CommandBoolInterface(CommandInterface):
         return "command"
 
     def argument_name(self):
-        return ""
+        return None
 
     def action(self):
         return "store_true"
