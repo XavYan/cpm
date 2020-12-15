@@ -31,6 +31,19 @@ Just that! Now you can verify the installation making `cpm --version`.
 If you want to update this project, clone again this repository, and execute `sudo ./UNINSTALL`
 and `sudo ./INSTALL` respectively. This will remove and install the new version.
 
+Full commands:
+```bash
+$ git clone https://github.com/XavYan/cpm /tmp/cpm_cloned
+$ cd /tmp/cpm_cloned
+$ sudo ./UNINSTALL.sh
+$ sudo ./INSTALL.sh
+```
+
+Test new version with:
+```bash
+$ cpm --version
+```
+
 ## Uninstallation
 If you want to uninstall this project, use:
 ```bash
