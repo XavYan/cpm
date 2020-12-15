@@ -1,6 +1,7 @@
 from makefile import Makefile
 from writer import Writer
 from .add import CommandAdd
+from .command_update import CommandUpdate
 from .delete import CommandDelete
 from .install import CommandInstall
 from .init import CommandInit
@@ -19,7 +20,8 @@ commands = {
     'delete': CommandDelete(makefile_processor, writer),
     'run': CommandRun(makefile_processor, writer),
     'build': CommandBuild(makefile_processor, writer),
-    'version': CommandVersion()
+    'version': CommandVersion(),
+    'update': CommandUpdate()
 }
 
 

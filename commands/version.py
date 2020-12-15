@@ -1,6 +1,5 @@
-from decouple import config
-
 from .command_bool_interface import CommandBoolInterface
+from _version import __version__
 
 
 class CommandVersion(CommandBoolInterface):
@@ -20,4 +19,4 @@ class CommandVersion(CommandBoolInterface):
         return ""
 
     def execute(self):
-        print("Actual version is", config('VERSION'))
+        print("Actual version is", __version__)

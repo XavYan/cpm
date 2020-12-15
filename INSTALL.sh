@@ -34,6 +34,11 @@ if [ ! -e $USER_HOME/cpm_modules ]; then
 fi
 
 pip3 install -r requirements.txt
+pip3 install .
+
+if [ -e /usr/local/bin/cpm ]; then
+  rm /usr/local/bin/cpm
+fi
 ln -s $USER_HOME/.cpm_core/cpm.py /usr/local/bin/cpm
 
 echo "Installed successfully! Try cpm -h"
