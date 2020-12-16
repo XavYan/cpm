@@ -1,6 +1,12 @@
+"""
+    Main file from commands module. It manages access to command instancies
+"""
+
+
 from makefile import Makefile
 from writer import Writer
 from .add import CommandAdd
+from .command_interface import CommandInterface
 from .command_update import CommandUpdate
 from .delete import CommandDelete
 from .install import CommandInstall
@@ -24,9 +30,17 @@ commands = {
 }
 
 
-def initialize_command(command):
+def initialize_command(command: str) -> CommandInterface:
+    """
+    This method creates a new command
+    :param command: Command string to be returned
+    :return: Command requested
+    """
     return commands[command]
 
 
 def command_list():
+    """
+    :return: List of actual available commands
+    """
     return commands.keys()

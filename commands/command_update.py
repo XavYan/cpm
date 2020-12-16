@@ -1,3 +1,8 @@
+"""
+    File containing CommandUpdate class, who implements update command
+"""
+
+
 import random
 import subprocess
 from os import chdir, getcwd
@@ -6,6 +11,10 @@ from .command_bool_interface import CommandBoolInterface
 
 
 class CommandUpdate(CommandBoolInterface):
+    """
+        This class implements update command, to update the project to a greater version, if
+        available
+    """
     def __str__(self):
         return "update"
 
@@ -28,8 +37,9 @@ class CommandUpdate(CommandBoolInterface):
         actual_folder = getcwd()
 
         subprocess.call(['git', 'clone', url_repository, dst_folder])
-        # TODO: Verify versions
-        # TODO: If local version is lower than remote version, proceed
+        # Verify versions
+        # If local version is lower than remote version, proceed
+        # Need to be done...
         # -> Execute UNINSTALL.sh
         print(f"Uninstalling cpm: 'bash {dst_folder}/UNINSTALL.sh'")
         chdir(dst_folder)

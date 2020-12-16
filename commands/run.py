@@ -1,7 +1,16 @@
+"""
+    File containing CommandRun class, who implements run command
+"""
+
+
 from .command_bool_interface import CommandBoolInterface
 
 
 class CommandRun(CommandBoolInterface):
+    """
+        This class implements run command. With this command you can run your project without
+        leaving the executable. Useful when you are running many times your program when testing
+    """
     def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile
@@ -11,7 +20,8 @@ class CommandRun(CommandBoolInterface):
         return "run"
 
     def help(self):
-        return "Compile and execute program. It deletes the executable after executing. Use it in root directory"
+        return "Compile and execute program. It deletes the executable after executing." \
+               "Use it in root directory"
 
     def short_option(self):
         return "-r"

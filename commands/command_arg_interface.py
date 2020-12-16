@@ -1,7 +1,15 @@
+"""
+    File containing CommandArgInterface class
+"""
+
+
 from .command_interface import CommandInterface
 
 
 class CommandArgInterface(CommandInterface):
+    """
+        Class interface for commands with arguments
+    """
     def __str__(self):
         return "argument_command"
 
@@ -24,4 +32,8 @@ class CommandArgInterface(CommandInterface):
         raise NotImplementedError
 
     def execute(self, arg):
+        """
+        This contains command functionality to be executed
+        :param arg: Argument needed by the command
+        """
         raise NotImplementedError

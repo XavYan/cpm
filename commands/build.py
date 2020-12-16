@@ -1,7 +1,16 @@
+"""
+    File containing CommandBuild class, who implements build command
+"""
+
+
 from .command_bool_interface import CommandBoolInterface
 
 
 class CommandBuild(CommandBoolInterface):
+    """
+        This class implements build command, letting users to create an executable using the
+        Makefile in the project
+    """
     def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile

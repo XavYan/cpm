@@ -1,7 +1,17 @@
+"""
+    File containing CommandAdd class, who implements add command
+"""
+
+
 from .command_arg_interface import CommandArgInterface
 
 
 class CommandAdd(CommandArgInterface):
+    """
+        This argument command lets users to add a new class to the project, including
+        configuring Makefile when is needed. This class is specifically created to support
+        both template class an non-template class
+    """
     def __init__(self, makefile, writer, template=False):
         super().__init__()
         self.makefile = makefile

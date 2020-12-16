@@ -1,7 +1,15 @@
+"""
+    File containing CommandBoolInterface class
+"""
+
+
 from .command_interface import CommandInterface
 
 
 class CommandBoolInterface(CommandInterface):
+    """
+        This interface class is for boolean commands
+    """
     def __str__(self):
         return "command"
 
@@ -24,4 +32,7 @@ class CommandBoolInterface(CommandInterface):
         raise NotImplementedError
 
     def execute(self):
+        """
+        This method will contain the command functionality, to be executed
+        """
         raise NotImplementedError

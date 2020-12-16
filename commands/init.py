@@ -1,3 +1,8 @@
+"""
+    File containing CommandInit class, who implements init command
+"""
+
+
 from os.path import join
 
 from ._constants import BASE_DIRS
@@ -5,6 +10,9 @@ from .command_arg_interface import CommandArgInterface
 
 
 class CommandInit(CommandArgInterface):
+    """
+        This class implements init command, used to create a new C++ project
+    """
     def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile
@@ -48,7 +56,7 @@ class CommandInit(CommandArgInterface):
 
         except FileExistsError:
             print(self.fail_text("{arg} exists".format(arg=arg)))
-        except:
+        except Exception:
             print(self.fail_text())
             raise
 

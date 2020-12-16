@@ -1,23 +1,35 @@
 #!/usr/bin/python3
 
+"""
+    This program is designed for better C++ programming. It supports creating both projects and
+    class, with Makefile configuration automated included!
+"""
+
 import argparse as argp
-from sys import argv, exc_info
-
+import sys
 import commands
+from commands.command_interface import CommandInterface
 
 
-def add_option(pars, long_option, short_option="", help_msg="", arg_name="", act=""):
-    # print("action:", act, "metavar:", arg_name)
-    if short_option:
-        if act == "store_true" or act == "store_false":
-            pars.add_argument(long_option, short_option, help=help_msg, action=act)
+def add_option(pars, command: CommandInterface):
+    """
+    This functions works to add a determined option to the command line parser
+    :param pars: Commandline parser
+    :param command: A command instance
+    """
+    if command.short_option():
+        if command.action() in ("store_true", "store_false"):
+            pars.add_argument(command.long_option(), command.short_option(), help=command.help(),
+                              action=command.action())
         else:
-            pars.add_argument(long_option, short_option, help=help_msg, metavar=arg_name, action=act)
+            pars.add_argument(command.long_option(), command.short_option(), help=command.help(),
+                              metavar=command.argument_name(), action=command.action())
     else:
-        if act == "store_true" or act == "store_false":
-            pars.add_argument(long_option, help=help_msg, action=act)
+        if command.action() in ("store_true", "store_false"):
+            pars.add_argument(command.long_option(), help=command.help(), action=command.action())
         else:
-            pars.add_argument(long_option, help=help_msg, metavar=arg_name, action=act)
+            pars.add_argument(command.long_option(), help=command.help(),
+                              metavar=command.argument_name(), action=command.action())
 
 
 options = commands.command_list()
@@ -28,20 +40,17 @@ parser = argp.ArgumentParser(prog="cpm")
 
 for option in options:
     cms[option] = commands.initialize_command(option)
-    argname = ""
-    if cms[option].argument_name():
-        argname = cms[option].argument_name()
-    add_option(parser, cms[option].long_option(), short_option=cms[option].short_option(), help_msg=cms[option].help(),
-               arg_name=argname, act=cms[option].action())
+
+    add_option(parser, cms[option])
 
 parser.add_argument('--global', '-g', action='store_true',
                     help="Use global methods instead", dest="gl")
 
 args = parser.parse_args()
 
-if not args.gl and len(argv) > 3:
+if not args.gl and len(sys.argv) > 3:
     print("You can only use one option")
-    exit(1)
+    sys.exit(1)
 
 try:
     for arg, value in vars(args).items():
@@ -52,6 +61,6 @@ try:
             else:
                 cms[arg].execute()
             print(cms[arg].success_text())
-except:
-    print('Han error has occurred:', exc_info())
-    exit(1)
+except OSError:
+    print('Han error has occurred:', sys.exc_info())
+    sys.exit(1)

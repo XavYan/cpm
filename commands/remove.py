@@ -1,11 +1,20 @@
-from .command_arg_interface import CommandArgInterface
-from decouple import config
+"""
+    File containing CommandRemove class, who implements remove command
+"""
+
+
+from shutil import rmtree
 from os.path import join
 from os import remove
-from shutil import rmtree
+from decouple import config
+from .command_arg_interface import CommandArgInterface
 
 
 class CommandRemove(CommandArgInterface):
+    """
+        This class implements remove command, used to remove modules from utils folder. With
+        --global option, it removes the module from cpm_modules folder
+    """
     def __init__(self, writer):
         super().__init__()
         self.writer = writer
@@ -31,7 +40,7 @@ class CommandRemove(CommandArgInterface):
     def execute(self, arg):
         filepath = ""
         try:
-            if self.gl:
+            if self.global_option:
                 filepath = join(config('DIR_PATH'), arg + '.' + config('COMPRESS_ALGORITHM'))
             else:
                 filepath = join(config('IMPORT_FOLDER'), arg)
@@ -43,7 +52,7 @@ class CommandRemove(CommandArgInterface):
     def _remove_module(self, filepath):
         if not self.writer.exists_file(filepath):
             raise FileNotFoundError
-        if self.gl:
+        if self.global_option:
             remove(filepath)
         else:
             rmtree(filepath)

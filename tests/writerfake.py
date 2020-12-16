@@ -32,8 +32,8 @@ class WriterFake(Writer):
     def append_empty_line(self, filename):
         self.lines.append('\n')
 
-    def create_new_folder(self, filename):
-        self.last_created_folders.append(filename)
+    def create_new_folder(self, folder_name):
+        self.last_created_folders.append(folder_name)
         
     def remove_file(self, filename):
         self.removed_files.append(filename)

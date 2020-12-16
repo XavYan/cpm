@@ -1,3 +1,8 @@
+"""
+    File containing CommandDelete class, who implements delete command
+"""
+
+
 from os.path import join
 
 from decouple import config
@@ -6,6 +11,9 @@ from commands.command_arg_interface import CommandArgInterface
 
 
 class CommandDelete(CommandArgInterface):
+    """
+        This class implements delete command, to delete classes in projects
+    """
     def __init__(self, makefile, writer):
         super().__init__()
         self.makefile = makefile

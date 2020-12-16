@@ -1,2 +1,2 @@
-python-decouple
-setuptools
+python-decouple^=3.3
+setuptools~=49.2.1
