@@ -77,7 +77,7 @@ class Makefile:
             action_source_line
         ]
 
-        self.writer.append_lines(lines, module)
+        self.writer.append_lines(lines, 'Makefile')
         self.update_all_with_module(join(path, 'Makefile'), module)
 
     def delete_action(self, module):
