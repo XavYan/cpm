@@ -44,7 +44,10 @@ class TestCommandAdd(TestCase):
 
         self.cmd_add._add_header_file(self.module)
 
-        self.assertEqual(expected_lines, self.writerfake.get_lines())
+        header_filename = f'include/{self.module}.h'
+        final_lines = self.writerfake.get_lines_from_file(header_filename)
+
+        self.assertEqual(expected_lines, final_lines)
 
     def test__add_source_file(self):
         expected_lines = [
@@ -57,4 +60,7 @@ class TestCommandAdd(TestCase):
 
         self.cmd_add._add_source_file(self.module)
 
-        self.assertEqual(expected_lines, self.writerfake.get_lines())
+        source_filename = f'src/{self.module}.cc'
+        final_lines = self.writerfake.get_lines_from_file(source_filename)
+
+        self.assertEqual(expected_lines, final_lines)
