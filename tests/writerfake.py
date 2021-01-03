@@ -24,6 +24,8 @@ class WriterFake(Writer):
         return self.lines[filename]
 
     def read_lines(self, filename):
+        if filename not in self.lines.keys():
+            return []
         return self.lines[filename]
 
     def write_lines(self, lines, filename):

@@ -42,4 +42,5 @@ class TestCommandTemplateAdd(TestCase):
 
         self.cmd_tadd._add_header_file(self.module, template=True)
 
-        self.assertEqual(expected_lines, self.writerfake.get_lines())
+        header_filename = f'include/{self.module}.h'
+        self.assertEqual(expected_lines, self.writerfake.get_lines_from_file(header_filename))

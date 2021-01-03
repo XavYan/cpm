@@ -60,7 +60,7 @@ class CommandAdd(CommandArgInterface):
             print(self.fail_text("{} already exists in this project".format(arg)))
 
     def _add_header_file(self, module, template=False):
-        header_filename = 'include/{}.h'.format(module)
+        header_filename = f'include/{module}.h'
 
         if self.writer.exists_file(header_filename):
             raise FileExistsError
