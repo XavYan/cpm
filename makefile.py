@@ -27,19 +27,21 @@ class Makefile:
     def __init__(self, writer):
         self.writer = writer
 
-    def generate(self, package, path='./'):
+    def generate(self, package, path=''):
         """
         It generates a new Makefile to the project
         :param package: Name of the project
         :param path: Path to the project. Actual by default
         """
-        filename = join(path, 'Makefile')
-        self.add_variable(filename, "CC", config('MAKEFILE_COMPILER'))
-        self.add_variable(filename, "CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
-        self.writer.append_empty_line(filename)
-        self.add_base_all_action(filename, package)
 
-    def add_variable(self, filename, name, value):
+        filename = join(path, 'Makefile')
+
+        self.add_variable("CC", config('MAKEFILE_COMPILER'))
+        self.add_variable("CFLAGS", config('MAKEFILE_COMPILER_OPTIONS'))
+        self.writer.append_empty_line(filename)
+        self.add_base_all_action(package)
+
+    def add_variable(self, name, value):
         """
         Add a Makefile variable to especified file
         :param filename: Name of the file
@@ -47,9 +49,9 @@ class Makefile:
         :param value: Value of the variable
         """
         line = name + "=" + value
-        self.writer.append_lines([line], filename)
+        self.writer.append_lines([line], 'Makefile')
 
-    def add_action(self, module, object_list=None, path='./'):
+    def add_action(self, module, object_list=None, path=''):
         """
         Add an action to the Makefile
         :param module: Name of the action
@@ -78,7 +80,7 @@ class Makefile:
         ]
 
         self.writer.append_lines(lines, 'Makefile')
-        self.update_all_with_module(join(path, 'Makefile'), module)
+        self.update_all_with_module(module)
 
     def delete_action(self, module):
         """
@@ -103,13 +105,12 @@ class Makefile:
 
         self.writer.write_lines(new_lines, 'Makefile')
 
-    def update_all_with_util(self, filename, module):
+    def update_all_with_util(self, module):
         """
         Add an action dependency to all action. Special for utils based action
-        :param filename: Name of the Makefile file
         :param module: Name of the action to be added
         """
-        lines = self.writer.read_lines(filename)
+        lines = self.writer.read_lines('Makefile')
 
         build_util_folder = join(config('IMPORT_FOLDER'), module)
 
@@ -127,15 +128,14 @@ class Makefile:
             else:
                 new_lines.append(line)
 
-        self.writer.write_lines(new_lines, filename)
+        self.writer.write_lines(new_lines, 'Makefile')
 
-    def update_all_with_module(self, filename, module):
+    def update_all_with_module(self, module):
         """
         Add an action dependency to all action. For tipical action
-        :param filename: Name of the Makefile file
         :param module: Name of the action to be added
         """
-        lines = self.writer.read_lines(filename)
+        lines = self.writer.read_lines('Makefile')
 
         new_lines = []
         all_detected = False
@@ -151,12 +151,11 @@ class Makefile:
             else:
                 new_lines.append(line)
 
-        self.writer.write_lines(new_lines, filename)
+        self.writer.write_lines(new_lines, 'Makefile')
 
-    def add_base_all_action(self, filename, package, separator=True):
+    def add_base_all_action(self, package, separator=True):
         """
         Add all action, base for all Makefile files
-        :param filename: Name of the Makefile file
         :param package: Name of the project
         :param separator: True if wants to add an empty line after all action
         """
@@ -165,11 +164,11 @@ class Makefile:
             'all: {source}'.format(source=source),
             '\t$(CC) $(CFLAGS) -o {package} {source}'.format(package=package, source=source)
         ]
-        self.writer.append_lines(lines, filename)
+        self.writer.append_lines(lines, 'Makefile')
         if separator:
-            self.writer.append_empty_line(filename)
+            self.writer.append_empty_line('Makefile')
 
-    def compile_project(self, path='./'):
+    def compile_project(self, path=''):
         """
         To compile a project with Makefile
         :param path: Path to the project. Must be a Makefile inside it

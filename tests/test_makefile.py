@@ -8,6 +8,7 @@ class TestMakefile(TestCase):
     def setUp(self):
         self.package = "matrix"
         self.action = "vector"
+        self.filename = "Makefile"
 
         self.writerfake = WriterFake()
         self.makefile = Makefile(self.writerfake)
@@ -24,15 +25,15 @@ class TestMakefile(TestCase):
 
         self.makefile.generate(self.package)
 
-        final_lines = self.writerfake.get_lines()
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
         self.assertEqual(expected_lines, final_lines)
 
     def test_add_variable(self):
         expected_lines = ["CC=g++"]
 
-        self.makefile.add_variable('Makefile', 'CC', 'g++')
+        self.makefile.add_variable('CC', 'g++')
 
-        final_lines = self.writerfake.get_lines()
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
         self.assertEqual(expected_lines, final_lines)
 
     def test_add_action(self):
@@ -44,10 +45,10 @@ class TestMakefile(TestCase):
             "\t$(CC) $(CFLAGS) -c -o build\\{action}.o src\\{action}.cc".format(action=self.action)
         ]
 
-        self.makefile.add_base_all_action('Makefile', self.package)
+        self.makefile.add_base_all_action(self.package)
         self.makefile.add_action(self.action)
 
-        written_lines = self.writerfake.get_lines()
+        written_lines = self.writerfake.get_lines_from_file(self.filename)
         self.assertEqual(expected_lines, written_lines)
 
     def test_delete_action(self):
@@ -64,11 +65,11 @@ class TestMakefile(TestCase):
             "\n"
         ]
 
-        self.writerfake.set_lines(initial_lines)
+        self.writerfake.set_lines(self.filename, initial_lines)
 
         self.makefile.delete_action(self.action)
 
-        final_lines = self.writerfake.get_lines()
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
         self.assertEqual(expected_lines, final_lines)
 
     def test_update_all_with_util(self):
@@ -85,26 +86,30 @@ class TestMakefile(TestCase):
             "\n"
         ]
 
-        self.writerfake.set_lines(initial_lines)
-        self.makefile.update_all_with_util('Makefile', self.action)
+        self.writerfake.set_lines(self.filename, initial_lines)
+        self.makefile.update_all_with_util(self.action)
 
-        self.assertEqual(expected_lines, self.writerfake.get_lines())
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
+
+        self.assertEqual(expected_lines, final_lines)
 
     def test_update_all_with_module(self):
-        lines = [
+        expected_lines = [
             "all: src\\main.cc",
             "\t$(CC) $(CFLAGS) -o matrix src\\main.cc",
             "\n"
         ]
 
-        self.writerfake.set_lines(lines)
+        self.writerfake.set_lines(self.filename, expected_lines)
 
-        lines[0] += " build\\matrix.o"
-        lines[1] += " build\\matrix.o"
+        expected_lines[0] += " build\\matrix.o"
+        expected_lines[1] += " build\\matrix.o"
 
-        self.makefile.update_all_with_module('Makefile', 'matrix')
+        self.makefile.update_all_with_module('matrix')
 
-        self.assertEqual(self.writerfake.get_lines(), lines)
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
+
+        self.assertEqual(expected_lines, final_lines)
 
     def test_add_base_all_action_with_separator(self):
         expected_lines = [
@@ -113,9 +118,11 @@ class TestMakefile(TestCase):
             "\n"
         ]
 
-        self.makefile.add_base_all_action('Makefile', 'matrix')
+        self.makefile.add_base_all_action('matrix')
 
-        self.assertEqual(self.writerfake.get_lines(), expected_lines)
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
+
+        self.assertEqual(expected_lines, final_lines)
 
     def test_add_base_all_action_without_separator(self):
         expected_lines = [
@@ -123,6 +130,8 @@ class TestMakefile(TestCase):
             "\t$(CC) $(CFLAGS) -o matrix src\\main.cc"
         ]
 
-        self.makefile.add_base_all_action('Makefile', 'matrix', separator=False)
+        self.makefile.add_base_all_action('matrix', separator=False)
 
-        self.assertEqual(expected_lines, self.writerfake.get_lines())
+        final_lines = self.writerfake.get_lines_from_file(self.filename)
+
+        self.assertEqual(expected_lines, final_lines)

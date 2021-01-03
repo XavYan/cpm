@@ -7,30 +7,35 @@ class WriterFake(Writer):
     def __init__(self):
         super().__init__()
         self.removed_files = []
-        self.lines = []
+        self.lines: dict[str] = {}
         self.last_created_folders = []
         self.exists_file_response = True
 
-    def set_lines(self, lines):
-        self.lines = deepcopy(lines)
+    def set_lines(self, filename, lines):
+        self.lines[filename] = deepcopy(lines)
 
     def clean_buffer(self):
         self.lines = []
 
-    def get_lines(self):
+    def get_all_lines(self):
         return self.lines
+
+    def get_lines_from_file(self, filename):
+        return self.lines[filename]
 
     def read_lines(self, filename):
-        return self.lines
+        return self.lines[filename]
 
     def write_lines(self, lines, filename):
-        self.lines = lines
+        self.lines[filename] = lines
 
     def append_lines(self, lines, filename):
-        self.lines.extend(lines)
+        if filename not in self.lines.keys():
+            self.lines[filename] = []
+        self.lines[filename].extend(lines)
 
     def append_empty_line(self, filename):
-        self.lines.append('\n')
+        self.append_lines(['\n'], filename)
 
     def create_new_folder(self, folder_name):
         self.last_created_folders.append(folder_name)
